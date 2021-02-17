@@ -4,18 +4,21 @@ import PageController from './components/PageController';
 import './assets/scss/app.scss';
 import './assets/icons/google-material/google-material.css'
 import Particles from "./components/pages/common/Particles";
+import BaseConnection from "./app/services/providers/BaseConnection";
 
 function App() {
-  return (
-      <>
+    const connection = new BaseConnection('', '', '/api/')
+
+    return (
+        <>
           <Particles/>
           <Navbar/>
           <div className='page'>
-              <PageController/>
+              <PageController connection={connection}/>
           </div>
           <Footer/>
-    </>
-  );
+        </>
+    );
 }
 
 export default App;

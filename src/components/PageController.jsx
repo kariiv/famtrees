@@ -6,25 +6,27 @@ import Person from "../app/entities/person/Person";
 import PersonDetails from "./pages/PersonDetails";
 import PersonEdit from "./pages/PersonEdit";
 import GraphPhone from "./pages/GraphPhone";
+import CacheRepository from "../app/services/repository/CacheRepository";
+import TreeRepository from "../app/services/repository/TreeRepository";
+import PersonRepository from "../app/services/repository/PersonRepository";
 
 class PageController extends Component {
 
     constructor(props) {
         super(props);
 
+        const treeRepository = new CacheRepository(new TreeRepository(props.connection));
+        const personRepository = new CacheRepository(new PersonRepository(props.connection));
+
         this.state = {
-            famTrees: [],
-            people: { },
+            treeRepo: treeRepository,
+            personRepo: personRepository,
             selectedTree: null
         }
     }
 
     componentDidMount() {
-        const famTrees = []
-        famTrees.push(new FamTree(1, "Madise"))
-        famTrees.push(new FamTree(2, "Mihkli"))
-        famTrees.push(new FamTree(3, "Mõtuse"))
-        this.setState({famTrees})
+
     }
 
     handleSelect = (famTree) => {
