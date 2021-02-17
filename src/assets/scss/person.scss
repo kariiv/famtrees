@@ -1,0 +1,137 @@
+
+.person-dead {
+  position: absolute;
+  left: -16px;
+  top: -9px;
+  transform: rotate(-40deg);
+  background: black;
+  display: block;
+  width: 60px;
+  height: 8px;
+  border-bottom: black;
+  border-radius: 10px 10px 0 0;
+}
+.person-dead-sm {
+  position: absolute;
+  left: -9px;
+  top: 8px;
+  transform: rotate(-40deg);
+  background: black;
+  display: block;
+  width: 48px;
+  height: 8px;
+  border-bottom: black;
+  border-radius: 10px 10px 0 0;
+}
+
+.profile {
+  position: absolute;
+  top: -10px;
+  left: -3px;
+}
+
+.profile-center {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: -30px;
+}
+.profile-left {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: -30px;
+}
+.profile-right {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: -30px;
+}
+
+.border-wrapper-round {
+  border-radius: 50%;
+  width: fit-content;
+}
+
+.profile-modal-lg {
+  margin-top: 60px;
+}
+.profile-modal-md {
+  margin-top: 30px;
+}
+.profile-modal-sm {
+  margin-top: 15px;
+}
+
+.person-profile {
+  display:block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  background: black;
+  > img{
+    display:inline-block;
+    width: auto;
+    height: 30px;
+  }
+}
+
+.profile-sm {
+  padding: 4px;
+  > .border-wrapper-round {
+    padding: 1px;
+    > .border-wrapper-round {
+      padding: 4px;
+      > .person-profile {
+        width: 30px;
+        height: 30px;
+        > img {
+          height: 30px;
+        }
+      }
+    }
+  }
+}
+.profile-md {
+  padding: 6px;
+  > .border-wrapper-round {
+    padding: 2px;
+    > .border-wrapper-round {
+      padding: 6px;
+      > .person-profile {
+        width: 50px;
+        height: 50px;
+        > img {
+          height: 50px;
+        }
+      }
+    }
+  }
+}
+.profile-lg {
+  padding: 8px;
+  > .border-wrapper-round {
+    padding: 3px;
+    > .border-wrapper-round {
+      padding: 8px;
+      > .person-profile {
+        width: 100px;
+        height: 100px;
+        > img {
+          height: 100px;
+        }
+      }
+    }
+  }
+}
+
+.scrollable {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  > .col-5 {
+    display: inline-block;
+  }
+}

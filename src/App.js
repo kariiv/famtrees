@@ -1,24 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from "./components/frame/navbar";
+import Footer from "./components/frame/footer";
+import PageController from './components/PageController';
+import './assets/scss/app.scss';
+import './assets/icons/google-material/google-material.css'
+import Particles from "./components/pages/common/Particles";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+          <Particles/>
+          <Navbar/>
+          <div className='page'>
+              <PageController/>
+          </div>
+          <Footer/>
+    </>
   );
 }
 

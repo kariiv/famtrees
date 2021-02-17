@@ -1,0 +1,57 @@
+
+.hover {
+  cursor: pointer;
+}
+
+.hover-primary:hover {
+  color: $primary !important;
+}
+.hover-secondary:hover {
+  color: $secondary !important;
+}
+.hover-dark:hover {
+  color: $dark !important;
+}
+.hover-success:hover {
+  color: $success !important;
+}
+.hover-danger:hover {
+  color: $danger !important;
+}
+.hover-warning:hover {
+  color: $warning !important;
+}
+.hover-light:hover {
+  color: $light !important;
+}
+
+.hover-bg-primary:hover {
+  background-color: $primary !important;
+}
+.hover-bg-secondary:hover {
+  background-color: $secondary !important;
+}
+.hover-bg-dark:hover {
+  background-color: $dark !important;
+}
+.hover-bg-success:hover {
+  background-color: $success !important;
+}
+.hover-gb-white:hover {
+  background-color: #fff !important;
+}
+.hover-bg-danger:hover {
+  background-color: $danger !important;
+}
+.hover-bg-warning:hover {
+  background-color: $warning !important;
+}
+.hover-bg-gray-light:hover {
+  background-color: #bbb !important;
+}
+.hover-bg-gray:hover {
+  background-color: var(--gray) !important;
+}
+.hover-bg-gray-dark:hover {
+  background-color: var(--gray-dark) !important;
+}
