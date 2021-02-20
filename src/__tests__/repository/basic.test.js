@@ -1,11 +1,11 @@
 import CacheRepository from "../../app/services/repository/CacheRepository";
 import PersonRepository from "../../app/services/repository/PersonRepository";
 import Person from "../../app/entities/person/Person";
-import BaseConnection from "../../app/services/providers/BaseConnection";
+import ConnectionConfiguration from "../../app/services/providers/ConnectionConfiguration";
 import TreeRepository from "../../app/services/repository/TreeRepository";
 import FamTree from "../../app/entities/famtree/FamTree";
 
-const connection = new BaseConnection('', '', '/api/');
+const connection = new ConnectionConfiguration('', '', '/api/');
 
 it('Person Cached Repository Test 1', () => {
 

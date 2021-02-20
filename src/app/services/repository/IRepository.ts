@@ -2,15 +2,15 @@ import BaseEntity from "../../entities/BaseEntity";
 
 interface IRepository {
 
-    getById(id: number): BaseEntity | null;
+    getByIdAsync(id: number): Promise<BaseEntity | null>;
 
-    getList(): BaseEntity[];
+    getListAsync(props?: any): Promise<BaseEntity[]>;
 
-    add(entity: BaseEntity): BaseEntity;
+    addAsync(entity: BaseEntity): Promise<BaseEntity>;
 
-    update(entity: BaseEntity): BaseEntity;
+    updateAsync(entity: BaseEntity): Promise<BaseEntity>;
 
-    delete(id: number): object;
+    deleteAsync(id: number): Promise<object>;
 
 }
 

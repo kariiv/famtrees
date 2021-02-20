@@ -47,6 +47,7 @@ class ParticleAnimation {
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
         this.particlesCount = (this.canvas.height * this.canvas.width) / 9000;
+        this.particlesCount = Math.min(120, this.particlesCount)
         this.mouse.radius = (this.canvas.height/this.keepRadius) * (this.canvas.width/this.keepRadius)
     }
 
@@ -141,15 +142,16 @@ class Particle {
             let distance = Math.sqrt(dx*dx + dy*dy);
 
             if (distance < radius + this.size) {
+                const speed = 3;
                 const size10 = this.size * 10;
                 if (x < this.x && this.x < canvas.width - size10)
-                    this.x += 10;
+                    this.x += speed;
                 if (x > this.x && this.x > size10)
-                    this.x -= 10;
+                    this.x -= speed;
                 if (y < this.y && this.y < canvas.height - size10)
-                    this.y += 10;
+                    this.y += speed;
                 if (y > this.y && this.y > size10)
-                    this.y -= 10;
+                    this.y -= speed;
             }
         }
         this.x += this.directionX;

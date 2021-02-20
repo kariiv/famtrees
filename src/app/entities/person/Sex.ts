@@ -1,10 +1,6 @@
-const sex = {
-    "male": 0,
-    'female': 1,
-    0: 'male',
-    1: 'female'
+enum Sex {
+    MALE,
+    FEMALE
 }
 
-Object.freeze(sex);
-
-export const SEX = sex;
+export default Sex

@@ -1,32 +1,40 @@
-import BaseConnection from "../providers/BaseConnection";
-import IRepository from "./IRepository";
 import FamTree from "../../entities/famtree/FamTree";
+import BaseRepository from "./BaseRepository";
 
-class TreeRepository implements IRepository {
 
-    connection: BaseConnection;
+class TreeRepository extends BaseRepository {
 
-    constructor(connection: BaseConnection) {
-        this.connection = connection
+    async addAsync(entity: FamTree): Promise<FamTree> {
+        const response = await fetch(this.endpoint.add, {
+            body : JSON.stringify({ "name": entity.getName() }),
+            method : "post",
+            headers : {
+                "context-header": "text/json"
+            }
+        })
+        console.log(JSON.stringify({ "name": entity.getName() }))
+        console.log(response)
+        const data = await response.json();
+        console.log(data)
+        return new FamTree(data.tree.id, data.tree.name);
     }
 
-    add(entity: FamTree): FamTree {
-        return new FamTree(1, entity.getName());
-    }
-
-    delete(id: number): object {
+    async deleteAsync(id: number): Promise<object> {
         return {};
     }
 
-    getById(id: number): FamTree | null {
+    async getByIdAsync(id: number): Promise<FamTree | null> {
         return new FamTree(id, 'Murakas');
     }
 
-    getList(): FamTree[] {
-        return [new FamTree(1, 'Vaarikad'), new FamTree(2, 'Laam'), new FamTree(3, 'Jedi'), new FamTree(4, 'Satikas')];
+    async getListAsync(): Promise<FamTree[]> {
+        const response = await fetch(this.endpoint.getList)
+        const data = await response.json();
+
+        return data.trees.map((t:any) => new FamTree(t.id, t.name));
     }
 
-    update(entity: FamTree): FamTree {
+    async updateAsync(entity: FamTree): Promise<FamTree> {
         return entity;
     }
 }

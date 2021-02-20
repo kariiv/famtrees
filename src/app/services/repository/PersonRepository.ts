@@ -1,34 +1,30 @@
-import BaseConnection from "../providers/BaseConnection";
-import IRepository from "./IRepository";
 import Person from "../../entities/person/Person";
+import BaseRepository from "./BaseRepository";
 
-class PersonRepository implements IRepository {
 
-    connection: BaseConnection;
+class PersonRepository extends BaseRepository {
 
-    constructor(connection: BaseConnection) {
-        this.connection = connection
+    async addAsync(entity: Person): Promise<Person> {
+        return Person.Dummy;
     }
 
-    add(entity: Person): Person {
-        return new Person(1, entity.getFirstName(), entity.getLastName());
-    }
-
-    delete(id: number): object {
+    async deleteAsync(id: number): Promise<object> {
         return {};
     }
 
-    getById(id: number): Person | null {
-        return new Person(id, 'Mihkel', 'Muumi');
+    async getByIdAsync(id: number): Promise<Person | null> {
+        await fetch(this.endpoint.getById + id)
+
+        return Person.Dummy;
     }
 
-    getList(): Person[] {
-
-        return [new Person(1, 'Miku', 'Meeri'),new Person(2, 'Mihkel', 'Muumi'),new Person(3, 'Mari', 'Maasikas')];
+    async getListAsync(props?: any): Promise<Person[]> {
+        return [Person.Dummy,Person.Dummy,Person.Dummy];
     }
 
-    update(entity: Person): Person {
+    async updateAsync(entity: Person): Promise<Person> {
         return entity;
     }
+
 }
 export default PersonRepository;
