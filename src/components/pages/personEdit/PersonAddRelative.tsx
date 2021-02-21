@@ -2,11 +2,11 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 
 type Props = {
-    onClick: Function,
+    onClick?: Function,
     label: string
 }
 
-export default ({label, onClick}: Props) => {
+export default ({label, onClick = ()=>{}}: Props) => {
     return (
         <Card className='bg-secondary p-2 hover hover-bg-gray' onClick={() => onClick()}>
             <Row className='fs-4 align-self-center'>

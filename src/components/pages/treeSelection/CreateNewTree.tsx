@@ -13,8 +13,16 @@ export default ({ onCreate, onCancel, show=true }: Props) => {
     const [name, setName] = useState('');
     const handleName = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
 
+    const onSubmit = () => {
+        onCreate(new FamTree(0, name));
+        setName('');
+    }
+    const allowed = ():boolean => {
+        return !!name
+    }
+
     return (
-        <BlackRedModal show={show} onClose={onCancel} onSubmit={() => onCreate(new FamTree(0, name))} titleRed='Create New ' titleWhite='Tree'>
+        <BlackRedModal submitDisabled={!allowed()} show={show} onClose={onCancel} onSubmit={onSubmit} titleRed='Create New ' titleWhite='Tree'>
             <RedFormControl value={name} onChange={handleName} placeholder="Name..."/>
         </BlackRedModal>
     )

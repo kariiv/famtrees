@@ -14,7 +14,7 @@ export default ({famTree, onClick}: Props) => {
                 {famTree.getName()}
             </Col>
             <Col className='text-right align-self-center'>
-                {famTree.getPeopleCount()} Members
+                {famTree.getPeople().length && <>{famTree.getPeople().length} Members</>}
             </Col>
         </Row>
     );

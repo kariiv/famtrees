@@ -1,15 +1,14 @@
-import Search from "./RedFormControl";
 import BlackRedModal from "./BlackRedModal";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-import {ChangeEvent, useState} from "react";
+import { useState} from "react";
 import FlyButton from "./FlyButton";
 import IPerson from "../../../app/interfaces/IPerson";
-import IRepository from "../../../app/services/repository/IRepository";
 import Sex from "../../../app/entities/person/Sex";
 import male from '../../../assets/icons/male-solid.svg';
 import female from '../../../assets/icons/female-solid.svg';
+import EntitySearch from "./EntitySearch";
 
 type PersonListElementProps = {
     person: IPerson,
@@ -35,37 +34,29 @@ const PersonListElement = ({person, onClick}: PersonListElementProps) => {
 }
 
 type Props = {
-    personRepository: IRepository,
     onSelect: Function,
 }
 
-export default ({onSelect, personRepository}:Props) => {
+export default ({onSelect}:Props) => {
     const [show, setShow] = useState(false);
-    const [search, setSearch] = useState('');
 
     const handleCreateNew = () => {
         console.log('Creating new');
     }
-    // const person1 = new Person(2, 'Musi', 'Mihkli');
-    // const person2 = new Person(3, 'Mikle', 'Mihkli');
-    // const person3 = new Person(4, 'Muumi', 'Mihk');
 
-    const handleSearch = (e:ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)
-    const handleClose = () => setShow(false);
-    const handleOpen = () => setShow(true);
+    const Map = (person: IPerson) =>
+        <PersonListElement person={person} onClick={() => {}}/>
+
+    const filter = (person: IPerson, search:string): boolean =>
+        (person.getFirstName() + person.getLastName()).toLowerCase().includes(search.toLowerCase())
 
     return (
         <>
-            <BlackRedModal show={show} onClose={handleClose} onSubmit={handleCreateNew}>
-                <Search onChange={handleSearch} placeholder="Search..." value={search}/>
-
-
-                {/*<PersonListElement person={person3} onClick={() => {}}/>*/}
-                {/*<PersonListElement person={person2} onClick={() => {}}/>*/}
-                {/*<PersonListElement person={person1} onClick={() => {}}/>*/}
+            <BlackRedModal show={show} onClose={() => setShow(false)} onSubmit={handleCreateNew}>
+                <EntitySearch options={[]} filter={filter} Map={Map}/>
             </BlackRedModal>
 
-            <FlyButton onClick={handleOpen} icon='go-add'/>
+            <FlyButton onClick={() => setShow(true)} icon='go-add'/>
         </>
     );
 }

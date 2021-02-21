@@ -8,6 +8,7 @@ import React from "react";
 type Props = {
     show: boolean,
     onSubmit: Function,
+    submitDisabled?: boolean,
     onClose: Function,
     children: React.ReactNode,
     titleRed?: string,
@@ -15,7 +16,7 @@ type Props = {
 }
 
 
-export default ({ show, onSubmit, onClose, children, titleRed, titleWhite }: Props) => {
+export default ({ show, onSubmit, onClose, children, titleRed, titleWhite, submitDisabled=false }: Props) => {
     return (<Modal
                 show={show}
                 size="sm"
@@ -35,7 +36,7 @@ export default ({ show, onSubmit, onClose, children, titleRed, titleWhite }: Pro
                             <BlackCancelButton onClick={onClose}>Back</BlackCancelButton>
                         </Col>
                         <Col className='pl-2'>
-                            <RedSubmitButton onClick={onSubmit}>Create New</RedSubmitButton>
+                            <RedSubmitButton disabled={submitDisabled} onClick={onSubmit}>Create New</RedSubmitButton>
                         </Col>
                     </Row>
                 </Modal.Footer>

@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import IPerson from "../../../app/interfaces/IPerson";
 
 type Props = {
-    person: IPerson,
+    person?: IPerson,
     tag: string,
     onClick?: Function
 }

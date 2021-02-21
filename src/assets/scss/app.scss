@@ -7,11 +7,13 @@ $body-bg: transparent;
 $body-color: #fff;
 
 $burger-color: $primary;
+$danger: $primary;
 
 
 @import "animated-burger/animated-burger";
 @import "animated-burger/burger1";
 @import "~bootstrap/scss/bootstrap";
+@import '~@sweetalert2/theme-dark/dark.scss';
 
 @import "fly-button";
 @import "hover";

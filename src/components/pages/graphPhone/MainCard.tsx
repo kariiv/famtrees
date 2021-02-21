@@ -3,7 +3,7 @@ import male from "../../../assets/icons/male-solid.svg";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import IPerson from "../../../app/interfaces/IPerson";
-import { View } from "../../PersonViewController";
+import {PersonViews} from "../common/PersonViews";
 
 type Props = {
     person: IPerson,
@@ -21,7 +21,7 @@ export default ({person, onViewChange}: Props) => {
                         {!person.isAlive() && <span className='person-dead'/>}
                     </Col>
                     <Col className='text-right'>
-                        <span onClick={() => onViewChange(View.DETAILS)} className='go go-more-vert hover hover-primary go-2x'/>
+                        <span onClick={() => onViewChange(PersonViews.DETAILS)} className='go go-more-vert hover hover-primary go-2x'/>
                     </Col>
                 </Row>
 

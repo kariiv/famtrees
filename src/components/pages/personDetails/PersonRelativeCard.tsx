@@ -4,12 +4,12 @@ import Col from "react-bootstrap/Col";
 import IPerson from "../../../app/interfaces/IPerson";
 
 type Props = {
-    onClick: Function,
+    onClick?: Function,
     person: IPerson,
     tag: string
 }
 
-export default ({person, tag, onClick}: Props) => {
+export default ({person, tag, onClick=()=>{}}: Props) => {
     return (
         <Card className='my-2 hover' onClick={() => onClick()}>
             {!person.isAlive() && <span className='person-dead-sm'/>}

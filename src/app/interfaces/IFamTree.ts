@@ -8,7 +8,7 @@ interface IFamTree {
 
     getPeople(): Person[];
 
-    getPeopleCount(): number;
+    getPeopleMap(): {[id:number]: Person};
 
 }
 export default IFamTree;

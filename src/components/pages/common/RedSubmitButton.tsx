@@ -3,8 +3,9 @@ import React from "react";
 
 type Props = {
     onClick: Function,
-    children: React.ReactNode
+    children: React.ReactNode,
+    disabled?: boolean
 }
 
-export default ({onClick, children}:Props) =>
-    <Button className='rounded-0 text-dark btn-block r-br' onClick={() => onClick()}>{children}</Button>
+export default ({onClick, children, disabled=false}:Props) =>
+    <Button disabled={disabled} className='rounded-0 text-dark btn-block r-br' onClick={() => onClick()}>{children}</Button>

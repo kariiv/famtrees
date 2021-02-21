@@ -2,24 +2,25 @@ import {useState} from "react";
 import PersonDetails from "./pages/PersonDetails";
 import PersonEdit from "./pages/PersonEdit";
 import IPerson from "../app/interfaces/IPerson";
-import IRepository from "../app/services/repository/IRepository";
+import IPersonManager from "../app/interfaces/IPersonManager";
 
 type Props = {
     person: IPerson,
-    personRepository: IRepository,
-    onViewChange: Function
+    onViewChange: Function,
+    onBack: Function,
+    personManager: IPersonManager
 };
 
-export default ({person, personRepository, onViewChange}: Props) => {
+export default ({person, onViewChange, onBack, personManager}: Props) => {
     const [edit, setEdit] = useState(false)
 
-    const handleEdit = () => setEdit(true)
-    const handleCancelEdit = () => setEdit(true)
+    const handleEdit = () => setEdit(true);
+    const handleCancelEdit = () => setEdit(false);
 
     return (
         <>
-            {!edit && <PersonDetails personRepository={personRepository} person={person} onEdit={handleEdit} onViewChange={onViewChange}/>}
-            {edit && <PersonEdit personRepository={personRepository} person={person} onCancelEdit={handleCancelEdit}/>}
+            {!edit && <PersonDetails onBack={onBack} person={person} onEdit={handleEdit} onViewChange={onViewChange}/>}
+            {edit && <PersonEdit personManager={personManager} person={person} onCancelEdit={handleCancelEdit}/>}
         </>
     );
 }

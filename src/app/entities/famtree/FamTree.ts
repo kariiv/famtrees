@@ -12,8 +12,8 @@ class FamTree extends BaseEntity implements IFamTree {
         super(id);
         this.id = id;
         this.name = name;
-        this.people = [];
         this.treeSize = 0
+        this.people = {}
     }
 
     getName(): string {
@@ -29,12 +29,12 @@ class FamTree extends BaseEntity implements IFamTree {
         return Object.values(this.people);
     }
 
-    getPeopleCount(): number {
-        return this.treeSize;
-    }
-
     toString(): string {
         return `${this.getId()}, ${this.getName()}`
+    }
+
+    getPeopleMap(): {[id:number]: Person} {
+        return this.people;
     }
 }
 

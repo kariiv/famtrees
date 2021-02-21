@@ -1,19 +1,18 @@
 import IFamTree from "../app/interfaces/IFamTree";
-import IRepository from "../app/services/repository/IRepository";
 import React, {Component} from "react";
 import TreeSelection from "./pages/TreeSelection";
 import PersonController from "./PersonController";
-import IPerson from "../app/interfaces/IPerson";
-
-type Props = {
-    personRepository: IRepository,
-    treeRepository: IRepository,
-    trees: IFamTree[],
-    people: IPerson[]
-};
+import { Create, Delete, List } from "../app/endpoints/TreeEndpoints";
+import ParentController from "./ParentController";
+import IParentMap from "../app/interfaces/IParentMap";
 
 type State = {
-    selectedTree: IFamTree | null
+    trees: IFamTree[]
+    loading: boolean
+};
+
+type Props = {
+
 };
 
 class TreeController extends Component<Props, State>{
@@ -22,27 +21,41 @@ class TreeController extends Component<Props, State>{
         super(props);
 
         this.state = {
-            selectedTree: null
+            trees: [],
+            loading: true
         }
     }
 
-    handleSelect = (famTree: IFamTree) => {
-        this.setState({selectedTree: famTree})
+    async componentDidMount() {
+        this.setState({trees: await List(), loading: false})
     }
 
-    removeSelection = () => {
-        this.setState({selectedTree: null})
+    handleDeleteTree = async (tree: IFamTree) => {
+        if (await Delete(tree)) {
+            const trees = this.state.trees.filter(t => t.getId() !== tree.getId())
+            this.setState({trees})
+        }
+    }
+    handleCreateTree = async (tree: IFamTree) => {
+        const newTree = await Create(tree);
+
+        if (newTree) {
+            const trees = [...this.state.trees, newTree]
+            this.setState({trees})
+        }
     }
 
     render() {
-        const { selectedTree } = this.state;
-        const { personRepository, treeRepository, trees, people } = this.props;
+        const { trees, loading } = this.state;
 
         return (
-            <>
-                {!selectedTree && <TreeSelection onSelect={this.handleSelect} treeRepository={treeRepository} trees={trees}/>}
-                {selectedTree && <PersonController personRepository={personRepository} treeRepository={treeRepository} famTree={selectedTree} /> }
-            </>
+            <TreeSelection trees={trees} doNewTree={this.handleCreateTree} loading={loading}>
+                {(tree: IFamTree, onDeSelect: Function) =>
+                    <ParentController tree={tree}>
+                        {(parents: IParentMap) => <PersonController parents={parents} onBack={onDeSelect} tree={tree}/>}
+                    </ParentController>
+                }
+            </TreeSelection>
         );
     }
 }

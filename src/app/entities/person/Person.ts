@@ -2,6 +2,15 @@ import BaseEntity from "../BaseEntity";
 import IPerson from "../../interfaces/IPerson";
 import Sex from "./Sex";
 
+function getDateFormat(date: string | Date) {
+    const reDate = new Date(date)
+    const day = reDate.getDate().toString();
+    const month = (reDate.getMonth() + 1).toString();
+    const year = reDate.getFullYear().toString();
+
+    return `${year.padStart(4, '0')}-${month.padStart(2,'0')}-${day.padStart(2, '0')}`
+}
+
 class Person extends BaseEntity implements IPerson {
 
     id: number;
@@ -21,8 +30,8 @@ class Person extends BaseEntity implements IPerson {
         this.lastName = lastName;
         this.sex = sex;
         this.treeId = treeId;
-        this.birthday = birthday;
-        this.deathDate = deathDate;
+        this.birthday = getDateFormat(birthday);
+        this.deathDate = getDateFormat(deathDate)
     }
 
     getId(): number {
@@ -38,15 +47,15 @@ class Person extends BaseEntity implements IPerson {
     }
 
     toString():string {
-        return `${this.getId()}: ${this.getFirstName()} ${this.getLastName()}`
+        return `${this.getId()}: ${this.getFirstName()} ${this.getLastName()}, ${this.getSex() === Sex.MALE ? 'Male' : 'Female'}, ${this.getTreeId()}`
     }
 
     getBirthday(): string {
-        return this.birthday;
+        return getDateFormat(this.birthday);
     }
 
     getDeathDate(): string {
-        return this.deathDate;
+        return getDateFormat(this.deathDate);
     }
 
     getSex(): Sex {
@@ -58,7 +67,7 @@ class Person extends BaseEntity implements IPerson {
     }
 
     isAlive(): boolean {
-        return true
+        return new Date(this.getDeathDate()) < new Date('0002-02-02');
     }
 }
 

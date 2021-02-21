@@ -1,6 +1,7 @@
 import Person from "../../app/entities/person/Person";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.scss';
@@ -8,13 +9,12 @@ import AddPerson from "./common/AddPerson";
 import MainCard from "./graphPhone/MainCard";
 import RelativeCard from "./graphPhone/RelativeCard";
 import IPerson from "../../app/interfaces/IPerson";
-import IRepository from "../../app/services/repository/IRepository";
 import {Component} from "react";
 
 type Props = {
     person: IPerson,
-    personRepository: IRepository,
-    onViewChange: Function
+    onViewChange: Function,
+    people: IPerson[],
 };
 
 type State = {
@@ -33,47 +33,52 @@ class GraphPhone extends Component<Props, State> {
     }
 
     render() {
-        const { personRepository } = this.props;
-
-        // const person1 = new Person(2, 'Musi', 'Mihkli');
-        // const person2 = new Person(3, 'Mikle', 'Mihkli');
-        // const person3 = new Person(4, 'Muumi', 'Mihk');
+        const { person, onViewChange, people } = this.props;
 
         return (<Container>
-
             <Row className='profile-modal-lg scrollable'>
-                {/*<RelativeCard person={person2} tag={'uncle'}/>*/}
-                {/*<RelativeCard person={person1} tag={'mom'}/>*/}
+                <RelativeCard person={person} tag={'uncle'}/>
+                <RelativeCard person={person} tag={'mom'}/>
 
-                {/*<RelativeCard tag={'dad'}/>*/}
+                <RelativeCard tag={'dad'}/>
 
-                {/*<RelativeCard person={person3} tag={"unt"}/>*/}
+                <RelativeCard person={person} tag={"unt"}/>
             </Row>
 
             <Row>
-                <Swiper
-                    spaceBetween={50}
-                    slidesPerView={1}
-                    navigation
-                    pagination={{ clickable: true }}
-                    scrollbar={{ draggable: true }}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
-                >
-                    {/*<SwiperSlide><MainCard onViewChange={} person={} /></SwiperSlide>*/}
-                    {/*<SwiperSlide><MainCard/></SwiperSlide>*/}
-                    {/*<SwiperSlide><MainCard/></SwiperSlide>*/}
-                    {/*<SwiperSlide><MainCard/></SwiperSlide>*/}
-                </Swiper>
+                <Col>
+                    <Swiper
+                        spaceBetween={50}
+                        slidesPerView={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                        scrollbar={{ draggable: true }}
+                        onSlideChange={() => console.log('slide change')}
+                        onSwiper={(swiper) => console.log(swiper)}
+                    >
+                        <SwiperSlide>
+                            <MainCard onViewChange={onViewChange} person={person} />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <MainCard onViewChange={onViewChange} person={person} />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <MainCard onViewChange={onViewChange} person={person} />
+                        </SwiperSlide>
+                        {/*<SwiperSlide><MainCard/></SwiperSlide>*/}
+                        {/*<SwiperSlide><MainCard/></SwiperSlide>*/}
+                        {/*<SwiperSlide><MainCard/></SwiperSlide>*/}
+                    </Swiper>
+                </Col>
             </Row>
 
             <Row className='profile-modal-md scrollable'>
-                {/*<RelativeCard person={person2} tag={'son'}/>*/}
-                {/*<RelativeCard person={person2} tag={'doughter'}/>*/}
-                {/*<RelativeCard tag={'child'}/>*/}
+                <RelativeCard person={person} tag={'son'}/>
+                <RelativeCard person={person} tag={'doughter'}/>
+                <RelativeCard tag={'child'}/>
             </Row>
 
-            <AddPerson personRepository={personRepository} onSelect={()=>{}}/>
+            {/*<AddPerson onSelect={()=>{}}/>*/}
         </Container>);
     }
 }

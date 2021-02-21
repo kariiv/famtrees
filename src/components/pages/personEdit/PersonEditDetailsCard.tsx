@@ -9,6 +9,8 @@ import {useState} from "react";
 import IPerson from "../../../app/interfaces/IPerson";
 import Sex from "../../../app/entities/person/Sex";
 import FlyButton from "../common/FlyButton";
+import Person from "../../../app/entities/person/Person";
+import IPersonManager from "../../../app/interfaces/IPersonManager";
 
 type DataInsertProps = {
     label: string,
@@ -34,14 +36,15 @@ const DataInsert = ({label, value, onChange, placeholder, type}: DataInsertProps
 type Props = {
     person: IPerson,
     onClose: Function,
+    personManager: IPersonManager,
 };
 
-export default ({person, onClose}: Props) => {
+export default ({person, onClose, personManager}: Props) => {
 
     const [firstName, setFirstName] = useState(person.getFirstName())
     const [lastName, setLastName] = useState(person.getLastName())
     const [birthday, setBirthday] = useState(person.getBirthday())
-    const [deathDate, setDeathDate] = useState(person.getDeathDate())
+    const [deathDate, setDeathDate] = useState(!person.isAlive() ? person.getDeathDate(): '')
     const [sex, setSex] = useState(person.getSex())
 
     const handleFirstName = (value:any) => setFirstName(value);
@@ -50,18 +53,23 @@ export default ({person, onClose}: Props) => {
     const handleDeathDate = (value:any) => setDeathDate(value);
     const handleSex = (value:any) => setSex(value);
 
-    const handleSubmit = () => console.log("Saving data") ;
+    const handleSubmit = () => {
+        const updated = new Person(person.getId(), firstName, lastName, 0, person.getTreeId(), birthday, deathDate);
+        personManager.updatePerson(updated)
+    };
 
     return (
         <>
             <Card className='profile-modal-lg'>
                 <Card.Body className='font-weight-bold'>
 
-                    <PersonProfile img={(sex === Sex.MALE) ? male: female} />
+                    <PersonProfile img={(sex === Sex.MALE) ? male: female} lg center/>
 
                     <Row className='mb-5'>
                         <Col className='text-dark'>
-                            <span className='person-dead'/>
+                            <Row>
+                                <span className='go go-trash go-2x hover hover-primary ml-3' onClick={() => personManager.removePerson(person as Person)}/>
+                            </Row>
                         </Col>
                         <Col className='text-dark mr-3 mb-4'>
                             <Row>

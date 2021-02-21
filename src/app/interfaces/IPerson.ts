@@ -2,6 +2,8 @@ import Sex from '../entities/person/Sex'
 
 interface IPerson {
 
+    getId(): number;
+
     getFirstName(): string;
 
     getLastName(): string;
