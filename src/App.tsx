@@ -9,7 +9,7 @@ function App() {
 
     return (
         <>
-          {/*<Particles/>*/}
+          <Particles/>
           <Navbar/>
           <div className='page'>
               <PageController />

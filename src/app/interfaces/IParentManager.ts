@@ -2,9 +2,9 @@ import IPerson from "./IPerson";
 
 interface IParentManager {
 
-    addChild(child: IPerson): boolean;
+    addParent(child: IPerson, parent: IPerson): void;
 
-    removeChild(): boolean;
+    removeParent(child: IPerson, parent: IPerson): void;
 
 }
 

@@ -1,4 +1,4 @@
-import Person from "../entities/person/Person";
+import IPerson from "./IPerson";
 
 interface IFamTree {
 
@@ -6,9 +6,9 @@ interface IFamTree {
 
     getName(): string;
 
-    getPeople(): Person[];
+    getPeople(): IPerson[];
 
-    getPeopleMap(): {[id:number]: Person};
+    getPeopleMap(): {[id:number]: IPerson};
 
 }
 export default IFamTree;

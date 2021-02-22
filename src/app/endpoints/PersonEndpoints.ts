@@ -2,7 +2,8 @@ import IPerson from "../interfaces/IPerson";
 import Person from "../entities/person/Person";
 import Swal from 'sweetalert2';
 
-const backend = 'https://localhost:44330';
+// const backend = 'https://localhost:44330';
+const backend = '';
 
 
 
@@ -59,7 +60,6 @@ export const Update = async (person: IPerson): Promise<IPerson|null> => {
         firstName: person.getFirstName(),
         lastName: person.getLastName(),
         birthday: person.getBirthday(),
-        sex: person.getSex(),
         deathDate: person.getDeathDate(),
         treeId: person.getTreeId()
     }

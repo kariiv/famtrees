@@ -68,7 +68,7 @@ export default ({person, onClose, personManager}: Props) => {
                     <Row className='mb-5'>
                         <Col className='text-dark'>
                             <Row>
-                                <span className='go go-trash go-2x hover hover-primary ml-3' onClick={() => personManager.removePerson(person as Person)}/>
+                                <span className='go go-trash go-2x hover hover-primary ml-3' onClick={() => personManager.removePerson(person)}/>
                             </Row>
                         </Col>
                         <Col className='text-dark mr-3 mb-4'>

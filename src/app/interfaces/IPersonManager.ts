@@ -1,12 +1,12 @@
-import IPerson from "../entities/person/Person";
+import IPerson from "./IPerson";
 
 interface ISiblingManager {
 
-    removePerson(person: IPerson): boolean;
+    removePerson(person: IPerson): void;
 
-    addPerson(person: IPerson): boolean;
+    addPerson(person: IPerson): void;
 
-    updatePerson(person: IPerson): boolean;
+    updatePerson(person: IPerson): void;
 
 }
 

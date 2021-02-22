@@ -9,17 +9,31 @@ import GraphPhone from "./pages/GraphPhone";
 import PersonDetailsController from "./PersonDetailsController";
 import IParentMap from "../app/interfaces/IParentMap";
 import PersonManager from "../app/managers/PersonManager";
+import IPersonManager from "../app/interfaces/IPersonManager";
+import FamilyBuilder from "../app/services/FamilyBuilder";
+import IParentManager from "../app/interfaces/IParentManager";
+import IMemberMap from "../app/interfaces/IMemberMap";
 
 type Props = {
     tree: IFamTree,
     onBack: Function,
     parents: IParentMap
+    parentManager: IParentManager
 };
 
 type State = {
     people: IPerson[],
-    loading: boolean
+    loading: boolean,
+    familyMembers: IMemberMap
 };
+
+const mapper = (people: IPerson[]): {[id:number]: IPerson} => {
+    const data:{[id:number]: IPerson} = {}
+
+    for (const person of people)
+        data[person.getId()] = person;
+    return data;
+}
 
 class PersonController extends Component<Props, State> {
 
@@ -28,25 +42,30 @@ class PersonController extends Component<Props, State> {
 
         this.state = {
             people: [],
-            loading: true
+            loading: true,
+            familyMembers: new FamilyBuilder(this.props.parents, mapper([])).build()
         }
     }
 
     async componentDidMount() {
-        this.setState({people: await List(this.props.tree!.getId()), loading: false})
+        const people = await List(this.props.tree!.getId())
+        const familyMembers = new FamilyBuilder(this.props.parents, mapper(people)).build()
+        this.setState({people, loading: false, familyMembers })
     }
 
     handleDeletePerson = async (person: IPerson) => {
         if (await Delete(person)) {
             const people = this.state.people.filter(p => p.getId() !== person.getId())
-            this.setState({people})
+            const familyMembers = new FamilyBuilder(this.props.parents, mapper(people)).build()
+            this.setState({people, familyMembers})
         }
     }
     handleCreatePerson = async (person: IPerson) => {
         const newPerson = await Create(person);
         if (newPerson) {
             const people = [...this.state.people, newPerson]
-            this.setState({people})
+            const familyMembers = new FamilyBuilder(this.props.parents, mapper(people)).build()
+            this.setState({people, familyMembers})
         }
     }
     handleEditPerson = async (person: IPerson) => {
@@ -54,36 +73,41 @@ class PersonController extends Component<Props, State> {
         if (updatePerson) {
             let people = this.state.people.filter(p => p.getId() !== person.getId())
             people = [...people, updatePerson]
-            this.setState({people})
+            const familyMembers = new FamilyBuilder(this.props.parents, mapper(people)).build()
+            this.setState({people, familyMembers})
         }
     }
 
     render() {
-        const { people, loading } = this.state;
-        const {  tree, onBack } = this.props;
+        const { people, loading, familyMembers } = this.state;
+        const {  tree, onBack, parentManager } = this.props;
 
         const personManager = new PersonManager(this.handleCreatePerson, this.handleDeletePerson, this.handleEditPerson)
 
         return (
             <PersonSelection onBack={onBack} famTree={tree} people={people} personManager={personManager} loading={loading}>
-                {(person: IPerson, initView: PersonViews, onDeselect:Function) =>
+                {(person: IPerson, initView: PersonViews, onDeselect:Function, modifiedManager: IPersonManager) =>
                     <PersonViewSwitch initView={initView}>
                         {(view: PersonViews, handleViewChange: Function) => {
                             return (<>
                                 { view === PersonViews.PHONE && <GraphPhone
-                                    people={people}
+                                    personManager={modifiedManager}
+                                    parentManager={parentManager}
+                                    familyMembers={familyMembers}
                                     onViewChange={handleViewChange}
                                     person={person} />}
-
                                 { view === PersonViews.DETAILS && <PersonDetailsController
-                                    personManager={personManager}
+                                    parentManager={parentManager}
+                                    familyMembers={familyMembers}
+                                    personManager={modifiedManager}
                                     onBack={onDeselect}
                                     person={person}
                                     onViewChange={handleViewChange}/>}
                                 {/*{ view === Views.DESKTOP && <GraphPhone/>}*/}
                             </>)
                         }}
-                    </PersonViewSwitch>}
+                    </PersonViewSwitch>
+                }
             </PersonSelection>
         );
     }

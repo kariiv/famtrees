@@ -4,14 +4,13 @@ import PersonListElement from "./personSelection/PersonListElement";
 import H1Title from "./common/H1Title";
 import IFamTree from "../../app/interfaces/IFamTree";
 import IPerson from "../../app/interfaces/IPerson";
-import FlyButton from "./common/FlyButton";
 import Container from "react-bootstrap/Container";
-import Person from "../../app/entities/person/Person";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {PersonViews} from "./common/PersonViews";
 import EntitySearch from "./common/EntitySearch";
 import IPersonManager from "../../app/interfaces/IPersonManager";
+import PersonManager from "../../app/managers/PersonManager";
 
 type Props = {
     famTree: IFamTree,
@@ -23,14 +22,21 @@ type Props = {
 }
 
 export default ({onBack, famTree, personManager, people, loading, children}:Props) => {
-    const [show, setShow] = useState(false);
     const [selected, setSelected] = useState<IPerson|null>(null);
     const [view, setView] = useState<PersonViews|null>(null);
 
-    const doNewPerson = (person: Person) => {
-        personManager.addPerson(person);
-        setShow(false);
+    const newUpdate = (person: IPerson) => {
+        personManager.updatePerson(person);
+        if (selected && person.getId() === selected.getId())
+            setSelected(person);
     }
+    const newDelete = (person: IPerson) => {
+        personManager.removePerson(person);
+        if (selected && person.getId() === selected.getId())
+            setSelected(null);
+    }
+    const modifiedManager = new PersonManager(personManager.addPerson, newDelete, newUpdate);
+
 
     const Map = (person:IPerson) =>
         <PersonListElement key={person.getId()} onClick={(view: PersonViews) => { setSelected(person); setView(view) }} person={person}/>
@@ -49,11 +55,10 @@ export default ({onBack, famTree, personManager, people, loading, children}:Prop
 
                 <EntitySearch Map={Map} filter={filter} options={people} loading={loading} emptyList='Looks like no people yet.'/>
 
-                <CreateNewPerson onCreate={doNewPerson} show={show} onCancel={() => setShow(false)} treeId={famTree.getId()}/>
-                <FlyButton onClick={() => setShow(true)} icon='go-add'/>
+                <CreateNewPerson personManager={personManager} treeId={famTree.getId()}/>
             </Container>}
 
-            {selected && children(selected, view, () => setSelected(null))}
+            {selected && children(selected, view, () => setSelected(null), modifiedManager)}
         </>
     );
 }

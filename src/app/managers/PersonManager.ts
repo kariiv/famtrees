@@ -13,15 +13,15 @@ class PersonManager implements IPersonManager {
         this.update = update;
     }
 
-    addPerson(person: IPerson): boolean {
+    addPerson(person: IPerson) {
         return this.add(person);
     }
 
-    removePerson(person: IPerson): boolean {
+    removePerson(person: IPerson) {
         return this.remove(person);
     }
 
-    updatePerson(person: IPerson): boolean {
+    updatePerson(person: IPerson) {
         return this.update(person);
     }
 

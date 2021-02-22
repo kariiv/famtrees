@@ -1,10 +1,10 @@
-import IPerson from "../entities/person/Person";
+import IPerson from "./IPerson";
 
 interface ISiblingManager {
 
-    addSibling(sibling1: IPerson, sibling2: IPerson): boolean;
+    addSibling(sibling1: IPerson, sibling2: IPerson): void;
 
-    removeSibling(sibling1: IPerson, sibling2: IPerson): boolean;
+    removeSibling(sibling1: IPerson, sibling2: IPerson): void;
 
 }
 

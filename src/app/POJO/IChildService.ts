@@ -1,4 +1,4 @@
-import IPerson from "./IPerson";
+import IPerson from "../interfaces/IPerson";
 
 interface IChildService {
 

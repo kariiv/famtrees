@@ -1,19 +1,23 @@
-import IParentManager from "../interfaces/IParentManager";
 import IPerson from "../interfaces/IPerson";
+import IParentManager from "../interfaces/IParentManager";
 
 class ParentManager implements IParentManager {
 
-    constructor() {
+    add: Function;
+    remove: Function;
 
+    constructor(add: Function, remove: Function) {
+        this.add = add;
+        this.remove = remove;
     }
 
-    addChild(child: IPerson): boolean {
-        return true;
+    addParent(child: IPerson, parent: IPerson) {
+        this.add(child, parent);
     }
 
-    removeChild(): boolean {
-        return true;
+    removeParent(child: IPerson, parent: IPerson) {
+        this.remove(child, parent);
     }
 }
 
-export default ParentManager;
+export default ParentManager

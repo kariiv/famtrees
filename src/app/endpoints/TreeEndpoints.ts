@@ -1,7 +1,8 @@
 import IFamTree from "../interfaces/IFamTree";
 import FamTree from "../entities/famtree/FamTree";
 
-const backend = 'https://localhost:44330';
+// const backend = 'https://localhost:44330';
+const backend = '';
 
 export const Create = async (tree: IFamTree) => {
     const response = await fetch(backend + "/api/trees", {

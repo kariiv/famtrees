@@ -1,4 +1,4 @@
-import IPerson from "../entities/person/Person";
+import IPerson from "../interfaces/IPerson";
 
 interface ISiblingService {
 

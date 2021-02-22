@@ -124,3 +124,11 @@ footer {
 .lh-3 {
   line-height: 1.5rem;
 }
+
+select option:checked,
+select option:hover {
+  box-shadow: 0 0 10px 100px #000 inset;
+}
+select:focus > option:checked {
+  background: #000 !important;
+}

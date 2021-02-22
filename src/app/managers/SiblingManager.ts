@@ -7,12 +7,12 @@ class SiblingManager implements ISiblingManager {
 
     }
 
-    addSibling(sibling1: IPerson, sibling2: IPerson): boolean {
+    addSibling(sibling1: IPerson, sibling2: IPerson) {
         // Add both parents from base sibling
         return true;
     }
 
-    removeSibling(sibling1: IPerson, sibling2: IPerson): boolean {
+    removeSibling(sibling1: IPerson, sibling2: IPerson) {
         // Add both parents from base sibling
         return true;
     }

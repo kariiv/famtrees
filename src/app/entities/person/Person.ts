@@ -30,8 +30,8 @@ class Person extends BaseEntity implements IPerson {
         this.lastName = lastName;
         this.sex = sex;
         this.treeId = treeId;
-        this.birthday = getDateFormat(birthday);
-        this.deathDate = getDateFormat(deathDate)
+        this.birthday = getDateFormat(birthday? birthday: new Date('0001-01-01'));
+        this.deathDate = getDateFormat(deathDate? deathDate: new Date('0001-01-01'))
     }
 
     getId(): number {

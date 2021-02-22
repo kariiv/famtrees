@@ -5,6 +5,7 @@ import PersonController from "./PersonController";
 import { Create, Delete, List } from "../app/endpoints/TreeEndpoints";
 import ParentController from "./ParentController";
 import IParentMap from "../app/interfaces/IParentMap";
+import IParentManager from "../app/interfaces/IParentManager";
 
 type State = {
     trees: IFamTree[]
@@ -12,7 +13,6 @@ type State = {
 };
 
 type Props = {
-
 };
 
 class TreeController extends Component<Props, State>{
@@ -52,7 +52,13 @@ class TreeController extends Component<Props, State>{
             <TreeSelection trees={trees} doNewTree={this.handleCreateTree} loading={loading}>
                 {(tree: IFamTree, onDeSelect: Function) =>
                     <ParentController tree={tree}>
-                        {(parents: IParentMap) => <PersonController parents={parents} onBack={onDeSelect} tree={tree}/>}
+                        {(parents: IParentMap, parentManager: IParentManager) =>
+                            <PersonController
+                                parentManager={parentManager}
+                                parents={parents}
+                                onBack={onDeSelect}
+                                tree={tree}/>
+                        }
                     </ParentController>
                 }
             </TreeSelection>

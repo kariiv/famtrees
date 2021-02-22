@@ -1,17 +1,20 @@
-import ISiblingService from "../interfaces/ISiblingService";
+import ISiblingService from "./ISiblingService";
 import Person from "../entities/person/Person";
 import IPerson from "../interfaces/IPerson";
 import IParentMap from "../interfaces/IParentMap";
 
 class SiblingService implements ISiblingService {
 
-    parentMap: IParentMap
+    parentMap: IParentMap;
+    people: IPerson[];
 
-    constructor(parentMap: IParentMap) {
+    constructor(parentMap: IParentMap, people: IPerson[]) {
         this.parentMap = parentMap;
+        this.people = people;
     }
 
     getBrothers(person: IPerson): Person[] {
+
         return [];
     }
 
@@ -25,6 +28,13 @@ class SiblingService implements ISiblingService {
 
     getYoungestSibling(person: IPerson): Person {
         return Person.Dummy;
+    }
+
+    getPerson(id: number) {
+        const items = this.people.filter(p => p.getId() === id);
+        if (items.length === 0)
+            console.warn("Id was not found.")
+        return items[0];
     }
 }
 

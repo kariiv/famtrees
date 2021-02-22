@@ -1,21 +1,30 @@
 import PersonProfile from "../common/PersonProfile";
-import male from "../../../assets/icons/male-solid.svg";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import IPerson from "../../../app/interfaces/IPerson";
+import female from "../../../assets/icons/female-solid.svg";
+import male from "../../../assets/icons/male-solid.svg";
 import {PersonViews} from "../common/PersonViews";
+import IFamilyMember from "../../../app/interfaces/IFamilyMember";
+import Sex from "../../../app/entities/person/Sex";
 
 type Props = {
-    person: IPerson,
+    familyMember: IFamilyMember,
     onViewChange: Function
 }
 
-export default ({person, onViewChange}: Props) => {
+export default ({familyMember, onViewChange}: Props) => {
+    const person = familyMember.Person
+
+    let piblings:IFamilyMember[] = []
+
+    for (const parent of familyMember.parents)
+        piblings = [...piblings, ...parent.siblings]
+
 
     return (
         <div className='bg-light mx-1 text-dark font-weight-bold card card-body mt-5'>
             <div className=''>
-                <PersonProfile img={male} center md/>
+                <PersonProfile img={person.getSex() === Sex.MALE ? male : female} center md/>
                 <Row>
                     <Col>
                         {!person.isAlive() && <span className='person-dead'/>}
@@ -46,7 +55,7 @@ export default ({person, onViewChange}: Props) => {
                             Kids
                         </Row>
                         <Row className='justify-content-center user-select-none'>
-                            0
+                            {familyMember.children.length}
                         </Row>
                     </Col>
 
@@ -55,7 +64,7 @@ export default ({person, onViewChange}: Props) => {
                             Siblings
                         </Row>
                         <Row className='justify-content-center user-select-none'>
-                            5
+                            {familyMember.siblings.length}
                         </Row>
                     </Col>
 
@@ -64,7 +73,7 @@ export default ({person, onViewChange}: Props) => {
                             Piblings
                         </Row>
                         <Row className='justify-content-center user-select-none'>
-                            4
+                            {piblings.length}
                         </Row>
                     </Col>
                 </Row>

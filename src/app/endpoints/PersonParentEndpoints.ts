@@ -2,14 +2,15 @@ import IPerson from "../interfaces/IPerson";
 import IFamTree from "../interfaces/IFamTree";
 import IPersonParent from "../interfaces/IPersonParent";
 
-const backend = 'https://localhost:44330';
+// const backend = 'https://localhost:44330';
+const backend = '';
 
 export const Create = async (person: IPerson, parent: IPerson) => {
     const body = {
         personId: person.getId(),
         parentId: parent.getId(),
     }
-    const response = await fetch(backend + "/api/person-parent", {
+    const response = await fetch(backend + "/api/person-parents", {
         body : JSON.stringify(body),
         method : "post",
         headers : {
@@ -60,8 +61,8 @@ export const ListTreeParents = async (tree: IFamTree): Promise<IPersonParent[]> 
     })
     try {
         const data = await response.json();
-        if (data.parents)
-            return data.parents
+        if (data.personParents)
+            return data.personParents
     } catch (e) {
         console.log('Person not found!')
     }

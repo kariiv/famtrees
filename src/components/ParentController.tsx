@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import { Create, Delete, ListTreeParents } from "../app/endpoints/PersonParentEndpoints";
 import IFamTree from "../app/interfaces/IFamTree";
 import IPerson from "../app/interfaces/IPerson";
 import IParentMap from "../app/interfaces/IParentMap";
+import ParentManager from "../app/managers/ParentManager";
 
 type State = {
-    parents: IParentMap
+    parents: IParentMap,
 }
 
 type Props = {
@@ -27,20 +28,24 @@ class ParentController extends Component<Props, State> {
         const { parents } = this.state;
 
         const items = await ListTreeParents(this.props.tree);
-        console.log(items);
+
+        console.log("ParentController", items)
         const keyData: IParentMap = {}
         for (const item of items) {
             const {personId, parentId} = item
-            if (personId in parents)
+            if (personId in keyData)
                 keyData[personId].push(parentId)
             else
                 keyData[personId] = [parentId, ]
         }
 
+        console.log("ParentController", keyData)
         this.setState({parents: keyData})
     }
 
     addParent = async (person: IPerson, parent: IPerson) => {
+        console.log("ParentController", person, parent)
+
         if (await Create(person, parent)) {
             if (person.getId() in this.state.parents)
                 this.state.parents[person.getId()].push(parent.getId());
@@ -62,8 +67,10 @@ class ParentController extends Component<Props, State> {
         const { children } = this.props;
         const { parents } = this.state;
 
+        const parentManager = new ParentManager(this.addParent, this.removeParent);
+
         // @ts-ignore
-        return children(parents, this.addParent, this.removeParent);
+        return children(parents, parentManager);
     }
 }
 

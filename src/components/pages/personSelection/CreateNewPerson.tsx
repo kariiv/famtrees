@@ -2,20 +2,23 @@ import {useState} from "react";
 import RedFormControl from "../common/RedFormControl";
 import BlackRedModal from "../common/BlackRedModal";
 import Person from "../../../app/entities/person/Person";
+import IPersonManager from "../../../app/interfaces/IPersonManager";
+import FlyButton from "../common/FlyButton";
+import FormControl from "react-bootstrap/FormControl";
 
 type Props = {
-    onCancel: Function
-    onCreate: Function
-    show?: boolean,
+    personManager: IPersonManager
     treeId: number,
 }
 
-export default ({ onCreate, show=true, onCancel, treeId }: Props) => {
+export default ({ personManager, treeId }: Props) => {
+    const [show, setShow] = useState(false);
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [birthday, setBirthday] = useState('')
     const [deathDate, setDeathDate] = useState('')
-    // const [sex, setSex] = useState(person.getSex())
+    const [sex, setSex] = useState(0)
 
     const allowed = ():boolean => {
         return !!firstName && !!lastName && !!birthday
@@ -25,25 +28,33 @@ export default ({ onCreate, show=true, onCancel, treeId }: Props) => {
     const handleLastName = (e:any) => setLastName(e.target.value);
     const handleBirthday = (e:any) => setBirthday(e.target.value);
     const handleDeathDate = (e:any) => setDeathDate(e.target.value);
-    // const handleSex = (e:any) => setSex(value);
+    const handleSex = (e:any) => setSex(e.target.value);
 
     const handleCreatePerson = () => {
-        const newPerson = new Person(0, firstName, lastName, 0, treeId, birthday, deathDate);
-        onCreate(newPerson);
+        setShow(false)
+        const newPerson = new Person(0, firstName, lastName, parseInt(String(sex)), treeId, birthday, deathDate);
+        personManager.addPerson(newPerson);
         setFirstName('');
         setLastName('');
         setBirthday('');
         setDeathDate('');
+        setSex(0);
     }
 
-
     return (
-        <BlackRedModal submitDisabled={!allowed()} show={show} onClose={onCancel} onSubmit={() => handleCreatePerson()} titleRed='Create New ' titleWhite='Person'>
-            <RedFormControl value={firstName} onChange={handleFirstName} placeholder="First name..."/>
-            <RedFormControl value={lastName} onChange={handleLastName} placeholder="Last name..."/>
-            <RedFormControl value={birthday} onChange={handleBirthday} placeholder="Born..." type='date'/>
-            <RedFormControl value={deathDate} onChange={handleDeathDate} placeholder="Died..." type='date'/>
-            {/*<RedFormControl value={deathDate} onChange={handleName} placeholder="Sex..." type='date'/>*/}
-        </BlackRedModal>
+        <>
+            <BlackRedModal submitDisabled={!allowed()} show={show} onClose={() => setShow(false)} onSubmit={() => handleCreatePerson()} titleRed='Create New ' titleWhite='Person'>
+                <RedFormControl value={firstName} onChange={handleFirstName} placeholder="First name..."/>
+                <RedFormControl value={lastName} onChange={handleLastName} placeholder="Last name..."/>
+                <RedFormControl value={birthday} onChange={handleBirthday} placeholder="Born..." type='date'/>
+                <RedFormControl value={deathDate} onChange={handleDeathDate} placeholder="Died..." type='date'/>
+                <FormControl as="select" value={sex} onChange={handleSex} placeholder='Sex' className='bg-transparent fam-control border-bottom border-primary text-white'>
+                    <option value={0} className='bg-dark hover-primary'>Male</option>
+                    <option value={1} className='bg-dark hover-primary'>Female</option>
+                </FormControl>
+            </BlackRedModal>
+
+            <FlyButton onClick={() => setShow(true)} icon='go-add'/>
+        </>
     )
 }
