@@ -6,13 +6,16 @@ import GroupTitle from "./personDetails/GroupTitle";
 import PersonRelativeCard from "./personDetails/PersonRelativeCard";
 import {FamilyClass} from "../../app/constants";
 import IFamilyMember from "../../app/interfaces/IFamilyMember";
+import PersonBreadcrumb from "./common/PersonBreadcrumb";
+import IPerson from "../../app/interfaces/IPerson";
 
 type Props = {
     onEdit: Function,
     familyMember: IFamilyMember,
+    breadcrumb: IPerson[],
 };
 
-export default ({onEdit, familyMember}: Props) => {
+export default ({onEdit, familyMember, breadcrumb}: Props) => {
 
     const spouses = familyMember.spouses;
     const kids = familyMember.children;
@@ -20,6 +23,8 @@ export default ({onEdit, familyMember}: Props) => {
 
     return (
         <Container>
+            <PersonBreadcrumb familyMember={familyMember} breadcrumb={breadcrumb} />
+
             <PersonDetailsCard person={familyMember.Person} onEdit={onEdit}/>
 
             { spouses.length > 0 && <GroupTitle title={'Spouse' + (spouses.length > 1? 's':'')}/>}

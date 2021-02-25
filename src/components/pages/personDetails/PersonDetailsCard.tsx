@@ -41,23 +41,18 @@ export default ({person, onEdit}: Props) => {
 
                 <PersonProfile img={person.getSex() === Sex.MALE ? male : female} lg center/>
 
-                <Row className='mb-3'>
+                <Row className='mb-4'>
                     <Col className='text-dark'>
                         {!person.isAlive() && <span className='person-dead'/>}
                     </Col>
                     <Col className='text-dark mr-3'>
-                        <Row>
-                            <ViewContext.Consumer>
-                                {({clearBreadcrumb}) => <span onClick={() => clearBreadcrumb()} className='go go-back go-2x hover hover-primary ml-auto'/>}
-                            </ViewContext.Consumer>
-                        </Row>
-                        <Row>
-                            <span onClick={() => onEdit()} className='go go-edit go-2x hover hover-primary ml-auto'/>
-                        </Row>
                         <Row className='mt-1'>
                             <ViewContext.Consumer>
                                 {({changeView}) => <span onClick={() => changeView(PersonView.PHONE)} className='go go-graph go-2x hover hover-primary ml-auto'/>}
                             </ViewContext.Consumer>
+                        </Row>
+                        <Row>
+                            <span onClick={() => onEdit()} className='go go-edit go-2x hover hover-primary ml-auto'/>
                         </Row>
                     </Col>
                 </Row>

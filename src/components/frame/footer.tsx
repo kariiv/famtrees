@@ -18,7 +18,7 @@ export default () =>
                 </Col>
                 <Col/>
                 <Col className='text-right'>
-                    Mr.Toruabi
+                    Kariiv
                     <hr className='m-0'/>
                     Since 2021
                 </Col>

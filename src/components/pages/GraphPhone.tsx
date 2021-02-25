@@ -14,8 +14,7 @@ import {FamilyClass} from "../../app/constants";
 import { Sex } from "../../app/constants";
 import AddRelative from "./graphPhone/AddRelative";
 import IFamilyMember from "../../app/interfaces/IFamilyMember";
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import ViewContext from "../../context/ViewContext";
+import PersonBreadcrumb from "./common/PersonBreadcrumb";
 
 type Props = {
     familyMember: IFamilyMember,
@@ -37,28 +36,21 @@ export default ({ familyMember, breadcrumb}: Props) => {
 
     // Todo: Piblings add
     return (<Container>
-
-        <ViewContext.Consumer>
-            { ({clearBreadcrumb, pushBreadcrumb}) => (
-                <Breadcrumb>
-                    <span className='go go-back mr-2 hover hover-primary' onClick={() => clearBreadcrumb()}/>
-                    { breadcrumb.map(p => {
-                        const isActive = p.getId() === familyMember.Person.getId()
-                        const click = isActive ? ()=>{}: () => pushBreadcrumb(p)
-                        return (<Breadcrumb.Item key={p.getId()} active={isActive} onClick={click}
-                                         className='text-primary'>{p.getFirstName()}<span
-                            className='text-white'>{p.getLastName()}</span></Breadcrumb.Item>)
-                    }) }
-                </Breadcrumb>)}
-        </ViewContext.Consumer>
+        <PersonBreadcrumb familyMember={familyMember} breadcrumb={breadcrumb}/>
 
         <Row className='scrollable'>
 
-            {!!dad && <RelativeCard person={dad.Person} tag={MemberClass(dad.Person, FamilyClass.PARENT)}/>}
+
+            {!!dad && dad.siblings.map(s => <RelativeCard key={s.Person.getId()} person={s.Person} familyClass={FamilyClass.PIBLING}/>) }
+
+            {!!dad && <RelativeCard person={dad.Person} familyClass={FamilyClass.PARENT}/>}
             {!dad && <AddRelative familyMember={familyMember} isParent={false} tag={'dad'} sex={Sex.MALE}/>}
 
-            {!!mom && <RelativeCard person={mom.Person} tag={MemberClass(mom.Person, FamilyClass.PARENT)}/>}
+            {!!mom && <RelativeCard person={mom.Person} familyClass={FamilyClass.PARENT} />}
             {!mom && <AddRelative familyMember={familyMember} isParent={false} tag={'mom'} sex={Sex.FEMALE}/>}
+
+            {!!mom && mom.siblings.map(s => <RelativeCard key={s.Person.getId()} person={s.Person} familyClass={FamilyClass.PIBLING}/>) }
+
         </Row>
 
         <Row>
@@ -78,9 +70,8 @@ export default ({ familyMember, breadcrumb}: Props) => {
         </Row>
 
         <Row className='profile-modal-md scrollable'>
-            { children.map(f => <RelativeCard key={f.Person.getId()} person={f.Person} tag={MemberClass(f.Person, FamilyClass.CHILD)}/>) }
+            { children.map(f => <RelativeCard key={f.Person.getId()} person={f.Person} familyClass={FamilyClass.CHILD}/>) }
             <AddRelative familyMember={familyMember} isParent={true} tag={'child'}/>
-            {/*<RelativeCard tag={'child'}/>*/}
         </Row>
 
     </Container>);

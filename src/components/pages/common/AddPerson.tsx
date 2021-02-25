@@ -82,15 +82,23 @@ class AddPerson extends Component<Props, State> {
         const { doHide, sex, show, isParent, familyMember } = this.props;
         return (
             <PersonContext.Consumer>
-                {({ people }) => {
+                {({ people, familyMembers }) => {
 
-                    if (sex !== undefined)
+                    // FILTER WHO CANNOT BE IN RELATION THEORETICALLY
+                    if (sex !== undefined) // When adding mom or dad
                         people = people.filter(p => p.getSex() === sex)
 
-                    if (isParent)
-                        people = people.filter(p => new Date(p.getBirthday()) > new Date(familyMember.Person.getBirthday()))
-                    else
+                    if (isParent) {
+                        people = people.filter(p => new Date(p.getBirthday()) > new Date(familyMember.Person.getBirthday())) // Child cannot be older than parent
+                        people = people.filter(p => familyMembers[p.getId()].parents.length < 2) // Child can have max 2 parents
+
+                        people = people.filter(p => !familyMembers[p.getId()].parents.map(f => f.Person).includes(familyMember.Person)) // Who already have this parent
+
+                        people = people.filter(p => (familyMembers[p.getId()].parents.length === 0) || familyMembers[p.getId()].parents[0].Person.getSex() !== familyMember.Person.getSex()) // Same sex parent
+                    }
+                    else {
                         people = people.filter(p => new Date(p.getBirthday()) < new Date(familyMember.Person.getBirthday()))
+                    }
 
                     return (
                         <BlackRedModal show={show} onClose={() => doHide(false)} onSubmit={this.handleCreateNewPerson}>

@@ -33,7 +33,7 @@ export default ({onCancelEdit, familyMember}: Props) => {
             <GroupTitle title='Kids'/>
             <Row>
                 {kids.map(f =>
-                    <Col className='m-0' sm={6} md={4} xl={3}>
+                    <Col key={f.Person.getId()} className='m-0' sm={6} md={4} xl={3}>
                         <PersonRelativeCard person={f.Person} familyClass={FamilyClass.CHILD}/>
                     </Col>)}
 

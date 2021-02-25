@@ -69,7 +69,7 @@ class PersonViewSwitcher extends Component<Props,State> {
                 View = <h1 className="text-center pt-5">Not implemented yet!</h1>
                 break
             case PersonView.DETAILS:
-                View = <PersonDetailsController familyMember={familyMember} />
+                View = <PersonDetailsController familyMember={familyMember} breadcrumb={breadcrumb} />
                 break
             case PersonView.PHONE:
                 View = <GraphPhone familyMember={familyMember} breadcrumb={breadcrumb} />
