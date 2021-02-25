@@ -1,17 +1,16 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import RedFormControl from "../common/RedFormControl";
 import BlackRedModal from "../common/BlackRedModal";
 import Person from "../../../app/entities/person/Person";
-import IPersonManager from "../../../app/interfaces/IPersonManager";
 import FlyButton from "../common/FlyButton";
 import FormControl from "react-bootstrap/FormControl";
 
 type Props = {
-    personManager: IPersonManager
+    createPerson: Function
     treeId: number,
 }
 
-export default ({ personManager, treeId }: Props) => {
+export default ({ createPerson, treeId }: Props) => {
     const [show, setShow] = useState(false);
 
     const [firstName, setFirstName] = useState('')
@@ -33,7 +32,7 @@ export default ({ personManager, treeId }: Props) => {
     const handleCreatePerson = () => {
         setShow(false)
         const newPerson = new Person(0, firstName, lastName, parseInt(String(sex)), treeId, birthday, deathDate);
-        personManager.addPerson(newPerson);
+        createPerson(newPerson);
         setFirstName('');
         setLastName('');
         setBirthday('');

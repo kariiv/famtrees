@@ -1,15 +1,16 @@
+import React, {Component} from 'react';
 import BlackRedModal from "./BlackRedModal";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import IPerson from "../../../app/interfaces/IPerson";
-import Sex from "../../../app/entities/person/Sex";
+import {Sex} from "../../../app/constants";
 import male from '../../../assets/icons/male-solid.svg';
 import female from '../../../assets/icons/female-solid.svg';
 import EntitySearch from "./EntitySearch";
-import IPersonManager from "../../../app/interfaces/IPersonManager";
-import IParentManager from "../../../app/interfaces/IParentManager";
-import IMemberMap from "../../../app/interfaces/IMemberMap";
+import IFamilyMember from "../../../app/interfaces/IFamilyMember";
+import ParentContext from "../../../context/ParentContext";
+import PersonContext from "../../../context/PersonContext";
 
 type PersonListElementProps = {
     person: IPerson,
@@ -35,50 +36,71 @@ const PersonListElement = ({person, onClick}: PersonListElementProps) => {
 }
 
 type Props = {
-    familyMembers: IMemberMap,
-    personManager: IPersonManager,
-    parentManager: IParentManager,
-    person: IPerson,
+    familyMember: IFamilyMember,
     isParent: boolean,
     doHide: Function,
     show: boolean
     sex?: Sex
 }
-
-export default ({personManager, parentManager, person, isParent, familyMembers, sex, doHide, show}:Props) => {
-
-    let options = Object.values(familyMembers).map(f => f.Person)
+type State = {
+}
 
 
-    if (sex !== undefined)
-        options = options.filter(p => p.getSex() === sex)
+class AddPerson extends Component<Props, State> {
 
-    if (isParent)
-        options = options.filter(p => new Date(p.getBirthday()) > new Date(person.getBirthday()))
-    else
-        options = options.filter(p => new Date(p.getBirthday()) < new Date(person.getBirthday()))
+    constructor(props:Props) {
+        super(props);
 
+        this.state = {
 
-    const handleSelect = (selected: IPerson) =>{
-        if (isParent) return parentManager.addParent(selected, person);
-        parentManager.addParent(person, selected);
-        doHide(false);
+        }
     }
 
-    const handleCreateNew = () => {
+    static contextType = ParentContext;
 
+    handleCreateNewPerson = () => {
         console.log('Creating new');
     }
 
-    const Map = (person: IPerson) =>
-        <PersonListElement key={person.getId()} person={person} onClick={() => handleSelect(person)}/>
+    handlePersonSelect = (selected: IPerson) => {
+        const { isParent, familyMember, doHide } = this.props;
+        const { addParent } = this.context;
+        const person = familyMember.Person
 
-    const filter = (person: IPerson, search:string): boolean =>
+        doHide();
+        if (isParent) return addParent(selected, person);
+        addParent(person, selected);
+    }
+
+    MapFunction = (person: IPerson) =>
+        <PersonListElement key={person.getId()} person={person} onClick={() => this.handlePersonSelect(person)}/>
+
+    filter = (person: IPerson, search:string): boolean =>
         (person.getFirstName() + person.getLastName()).toLowerCase().includes(search.toLowerCase())
 
-    return (
-        <BlackRedModal show={show} onClose={() => doHide(false)} onSubmit={handleCreateNew}>
-            <EntitySearch options={options} filter={filter} Map={Map}/>
-        </BlackRedModal>
-    );
+    render() {
+        const { doHide, sex, show, isParent, familyMember } = this.props;
+        return (
+            <PersonContext.Consumer>
+                {({ people }) => {
+
+                    if (sex !== undefined)
+                        people = people.filter(p => p.getSex() === sex)
+
+                    if (isParent)
+                        people = people.filter(p => new Date(p.getBirthday()) > new Date(familyMember.Person.getBirthday()))
+                    else
+                        people = people.filter(p => new Date(p.getBirthday()) < new Date(familyMember.Person.getBirthday()))
+
+                    return (
+                        <BlackRedModal show={show} onClose={() => doHide(false)} onSubmit={this.handleCreateNewPerson}>
+                            <EntitySearch options={people} filter={this.filter} Map={this.MapFunction}/>
+                        </BlackRedModal>
+                    )
+                }}
+            </PersonContext.Consumer>
+        );
+    }
 }
+
+export default AddPerson;

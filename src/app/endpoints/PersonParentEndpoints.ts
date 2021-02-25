@@ -1,9 +1,7 @@
 import IPerson from "../interfaces/IPerson";
 import IFamTree from "../interfaces/IFamTree";
-import IPersonParent from "../interfaces/IPersonParent";
-
-// const backend = 'https://localhost:44330';
-const backend = '';
+import IPersonParent from "../interfaces/PersonParent";
+import { backend } from './config';
 
 export const Create = async (person: IPerson, parent: IPerson) => {
     const body = {
@@ -40,8 +38,7 @@ export const Delete = async (person: IPerson, parent: IPerson): Promise<boolean>
     return data.status === "Removed";
 }
 
-export const ListPersonParents = async (person: IPerson, parent: IPerson): Promise<number[]> => {
-
+export const ListPersonParents = async (person: IPerson): Promise<number[]> => {
     const response = await fetch(backend + "/api/person-parent/" + person.getId(), {
         method : "get"
     })

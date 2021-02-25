@@ -1,3 +1,5 @@
+import React from 'react'
+
 type Props = {
     className?: string,
     icon?: string,
@@ -5,11 +7,11 @@ type Props = {
     children?: JSX.ElementChildrenAttribute
 }
 
-export default (props: Props) => {
+export default ({ className, icon, children, onClick }: Props) => {
     return (
-        <span onClick={() => props.onClick()} className={'fly-button bg-primary hover ' + (props.className || '')}>
-            {props.icon && <span className={'go go-3x text-dark p-2 ' + props.icon}/>}
-            {props.children}
+        <span onClick={() => onClick()} className={'fly-button bg-primary hover ' + (className || '')}>
+            {icon && <span className={'go go-3x text-dark p-2 ' + icon}/>}
+            {children}
         </span>
     )
 }

@@ -1,15 +1,18 @@
+import React from 'react';
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import IPerson from "../../../app/interfaces/IPerson";
+import {FamilyClass} from "../../../app/constants";
+import MemberClass from "../../../app/services/MemberClass";
 
 type Props = {
     onClick?: Function,
     person: IPerson,
-    tag: string
+    familyClass: FamilyClass
 }
 
-export default ({person, tag, onClick=()=>{}}: Props) => {
+export default ({person, familyClass, onClick=()=>{}}: Props) => {
     return (
         <Card className='my-2 hover' onClick={() => onClick()}>
             {!person.isAlive() && <span className='person-dead-sm'/>}
@@ -18,7 +21,7 @@ export default ({person, tag, onClick=()=>{}}: Props) => {
                     <span className='fs-4 text-primary font-weight-bold '>{person.getFirstName()}<span className='text-dark'>{person.getLastName()}</span></span>
                 </Col>
                 <Col className='text-right align-self-center'>
-                    <span className='font-weight-bold text-dark'>{tag}</span>
+                    <span className='font-weight-bold text-dark'>{MemberClass(person, familyClass)}</span>
                 </Col>
             </Row>
         </Card>

@@ -1,64 +1,58 @@
-import {useState} from "react";
+import React, {Component} from 'react';
 import CreateNewPerson from "./personSelection/CreateNewPerson";
 import PersonListElement from "./personSelection/PersonListElement";
 import H1Title from "./common/H1Title";
-import IFamTree from "../../app/interfaces/IFamTree";
 import IPerson from "../../app/interfaces/IPerson";
 import Container from "react-bootstrap/Container";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import {PersonViews} from "./common/PersonViews";
+import {PersonView} from "../../app/constants";
 import EntitySearch from "./common/EntitySearch";
-import IPersonManager from "../../app/interfaces/IPersonManager";
-import PersonManager from "../../app/managers/PersonManager";
+import TreeContext from "../../context/TreeContext";
+import PersonContext from "../../context/PersonContext";
 
 type Props = {
-    famTree: IFamTree,
-    people: IPerson[],
-    onBack: Function,
-    personManager: IPersonManager,
-    loading: boolean,
-    children: Function,
+    onSelect: Function,
+}
+type State = {
 }
 
-export default ({onBack, famTree, personManager, people, loading, children}:Props) => {
-    const [selected, setSelected] = useState<IPerson|null>(null);
-    const [view, setView] = useState<PersonViews|null>(null);
+class PersonSelection extends Component<Props, State> {
 
-    const newUpdate = (person: IPerson) => {
-        personManager.updatePerson(person);
-        if (selected && person.getId() === selected.getId())
-            setSelected(person);
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+        }
     }
-    const newDelete = (person: IPerson) => {
-        personManager.removePerson(person);
-        if (selected && person.getId() === selected.getId())
-            setSelected(null);
-    }
-    const modifiedManager = new PersonManager(personManager.addPerson, newDelete, newUpdate);
+
+    static contextType = PersonContext;
+
+    MapFunction = (person:IPerson) =>
+        <PersonListElement key={person.getId()} onClick={(view: PersonView) => this.props.onSelect(person, view)} person={person}/>
 
 
-    const Map = (person:IPerson) =>
-        <PersonListElement key={person.getId()} onClick={(view: PersonViews) => { setSelected(person); setView(view) }} person={person}/>
-
-    const filter = (person: IPerson, search:string): boolean =>
+    filter = (person: IPerson, search:string) =>
         (person.getFirstName() + person.getLastName()).toLowerCase().includes(search.toLowerCase())
 
-    return (
-        <>
-            {!selected && <Container>
-                <H1Title red={famTree.getName()} caps>
-                    <OverlayTrigger placement='left' overlay={<Tooltip id={`tooltip-left`}>Back to menu</Tooltip>}>
-                        <span className='text-left go go-back hover hover-primary' onClick={() => onBack()}/>
-                    </OverlayTrigger>
-                </H1Title>
+    render() {
+        const { loading, people, createPerson } = this.context;
 
-                <EntitySearch Map={Map} filter={filter} options={people} loading={loading} emptyList='Looks like no people yet.'/>
+        return (
+            <TreeContext.Consumer>
+                {({ selectedTree, deSelectTree }) => (<Container>
+                    <H1Title red={selectedTree!.getName()} caps>
+                        <OverlayTrigger placement='left' overlay={<Tooltip id={`tooltip-left`}>Back to menu</Tooltip>}>
+                            <span className='text-left go go-back hover hover-primary' onClick={() => deSelectTree()}/>
+                        </OverlayTrigger>
+                    </H1Title>
 
-                <CreateNewPerson personManager={personManager} treeId={famTree.getId()}/>
-            </Container>}
+                    <EntitySearch Map={this.MapFunction} filter={this.filter} options={people} loading={loading} emptyList='Looks like no people yet.'/>
 
-            {selected && children(selected, view, () => setSelected(null), modifiedManager)}
-        </>
-    );
+                    <CreateNewPerson createPerson={createPerson} treeId={selectedTree!.getId()}/>
+                </Container>) }
+            </TreeContext.Consumer>
+        );
+    }
 }
+
+export default PersonSelection;

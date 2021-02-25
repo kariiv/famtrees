@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import RedFormControl from "../common/RedFormControl";
 import BlackRedModal from "../common/BlackRedModal";
 import FamTree from "../../../app/entities/famtree/FamTree";

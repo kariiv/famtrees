@@ -1,3 +1,4 @@
+import React from 'react';
 import Card from "react-bootstrap/Card";
 import IPerson from "../../../app/interfaces/IPerson";
 

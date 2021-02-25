@@ -1,27 +1,22 @@
+import React from 'react'
 import Col from "react-bootstrap/Col";
 import PersonProfile from "../common/PersonProfile";
 import female from "../../../assets/icons/female-solid.svg";
 import male from "../../../assets/icons/male-solid.svg";
 import Row from "react-bootstrap/Row";
-import IPerson from "../../../app/interfaces/IPerson";
-import Sex from "../../../app/entities/person/Sex";
+import {Sex} from "../../../app/constants";
 import AddPerson from "../common/AddPerson";
-import IParentManager from "../../../app/interfaces/IParentManager";
-import IPersonManager from "../../../app/interfaces/IPersonManager";
 import {useState} from "react";
-import IMemberMap from "../../../app/interfaces/IMemberMap";
+import IFamilyMember from "../../../app/interfaces/IFamilyMember";
 
 type Props = {
-    person: IPerson,
     tag: string,
     sex?: Sex,
     isParent: boolean,
-    personManager: IPersonManager,
-    parentManager: IParentManager,
-    familyMembers: IMemberMap,
+    familyMember: IFamilyMember,
 }
 
-export default ({person, isParent, tag, sex, personManager, parentManager, familyMembers}: Props) => {
+export default ({isParent, tag, sex, familyMember}: Props) => {
     const [show, setShow] = useState(false);
 
     return (
@@ -39,13 +34,10 @@ export default ({person, isParent, tag, sex, personManager, parentManager, famil
             </Col>
 
             <AddPerson sex={sex}
-                        familyMembers={familyMembers}
+                       familyMember={familyMember}
                        show={show}
-                        doHide={() => setShow(false)}
-                        person={person}
-                        isParent={isParent}
-                        personManager={personManager}
-                        parentManager={parentManager}/>
+                       doHide={() => setShow(false)}
+                       isParent={isParent}/>
         </>
 
     );

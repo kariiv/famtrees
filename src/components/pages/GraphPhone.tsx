@@ -1,3 +1,4 @@
+import React from 'react';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,29 +9,23 @@ import 'swiper/swiper.scss';
 import MainCard from "./graphPhone/MainCard";
 import RelativeCard from "./graphPhone/RelativeCard";
 import IPerson from "../../app/interfaces/IPerson";
-import IMemberMap from "../../app/interfaces/IMemberMap";
-import MemberClass from "../../app/entities/famtree/MemberClass";
-import Class from "../../app/entities/famtree/Class";
-import Sex from "../../app/entities/person/Sex";
+import MemberClass from "../../app/services/MemberClass";
+import {FamilyClass} from "../../app/constants";
+import { Sex } from "../../app/constants";
 import AddRelative from "./graphPhone/AddRelative";
-import IParentManager from "../../app/interfaces/IParentManager";
-import IPersonManager from "../../app/interfaces/IPersonManager";
+import IFamilyMember from "../../app/interfaces/IFamilyMember";
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import ViewContext from "../../context/ViewContext";
 
 type Props = {
-    person: IPerson,
-    onViewChange: Function,
-    familyMembers: IMemberMap,
-    parentManager: IParentManager
-    personManager: IPersonManager
+    familyMember: IFamilyMember,
+    breadcrumb: IPerson[],
 };
 
-export default ({ person, onViewChange, familyMembers, parentManager, personManager}: Props) => {
-    // const [breadcrumb, setBreadcrumb] = useState<IPerson[]>([])
-    // Todo: Add breadcrumb
-    const familyMember = familyMembers[person.getId()];
+export default ({ familyMember, breadcrumb}: Props) => {
 
-    var mom;
-    var dad;
+    let mom;
+    let dad;
     const parents = familyMember.parents
     for (const parent of parents) {
         if (parent.Person.getSex() === Sex.MALE) dad = parent;
@@ -40,32 +35,42 @@ export default ({ person, onViewChange, familyMembers, parentManager, personMana
     const siblings = familyMember.siblings
     const children = familyMember.children
 
-    console.log("Relatives", siblings, children)
-
     // Todo: Piblings add
     return (<Container>
-        <Row className='profile-modal-lg scrollable'>
 
-            {!!dad && <RelativeCard person={dad.Person} tag={MemberClass(dad.Person, Class.PARENT)}/>}
-            {!dad && <AddRelative familyMembers={familyMembers} personManager={personManager} parentManager={parentManager} person={person} isParent={false} tag={'dad'} sex={Sex.MALE}/>}
+        <ViewContext.Consumer>
+            { ({clearBreadcrumb, pushBreadcrumb}) => (
+                <Breadcrumb>
+                    <span className='go go-back mr-2 hover hover-primary' onClick={() => clearBreadcrumb()}/>
+                    { breadcrumb.map(p => {
+                        const isActive = p.getId() === familyMember.Person.getId()
+                        const click = isActive ? ()=>{}: () => pushBreadcrumb(p)
+                        return (<Breadcrumb.Item key={p.getId()} active={isActive} onClick={click}
+                                         className='text-primary'>{p.getFirstName()}<span
+                            className='text-white'>{p.getLastName()}</span></Breadcrumb.Item>)
+                    }) }
+                </Breadcrumb>)}
+        </ViewContext.Consumer>
 
-            {!!mom && <RelativeCard person={mom.Person} tag={MemberClass(mom.Person, Class.PARENT)}/>}
-            {!mom && <AddRelative familyMembers={familyMembers} personManager={personManager} parentManager={parentManager} person={person} isParent={false} tag={'mom'} sex={Sex.FEMALE}/>}
+        <Row className='scrollable'>
 
+            {!!dad && <RelativeCard person={dad.Person} tag={MemberClass(dad.Person, FamilyClass.PARENT)}/>}
+            {!dad && <AddRelative familyMember={familyMember} isParent={false} tag={'dad'} sex={Sex.MALE}/>}
+
+            {!!mom && <RelativeCard person={mom.Person} tag={MemberClass(mom.Person, FamilyClass.PARENT)}/>}
+            {!mom && <AddRelative familyMember={familyMember} isParent={false} tag={'mom'} sex={Sex.FEMALE}/>}
         </Row>
 
         <Row>
             <Col>
-                <Swiper
-                    spaceBetween={50}
-                    slidesPerView={1}
-                >
+                <Swiper spaceBetween={50} slidesPerView={1}>
+
                     <SwiperSlide>
-                        <MainCard onViewChange={onViewChange} familyMember={familyMember} />
+                        <MainCard familyMember={familyMember} />
                     </SwiperSlide>
 
                     {siblings.map(f => <SwiperSlide key={f.Person.getId()}>
-                        <MainCard onViewChange={onViewChange} familyMember={f} />
+                        <MainCard familyMember={f} />
                     </SwiperSlide>)}
 
                 </Swiper>
@@ -73,8 +78,8 @@ export default ({ person, onViewChange, familyMembers, parentManager, personMana
         </Row>
 
         <Row className='profile-modal-md scrollable'>
-            { children.map(f => <RelativeCard key={f.Person.getId()} person={f.Person} tag={MemberClass(f.Person, Class.CHILD)}/>) }
-            <AddRelative familyMembers={familyMembers} personManager={personManager} parentManager={parentManager} person={person} isParent={true} tag={'child'}/>
+            { children.map(f => <RelativeCard key={f.Person.getId()} person={f.Person} tag={MemberClass(f.Person, FamilyClass.CHILD)}/>) }
+            <AddRelative familyMember={familyMember} isParent={true} tag={'child'}/>
             {/*<RelativeCard tag={'child'}/>*/}
         </Row>
 

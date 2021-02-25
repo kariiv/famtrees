@@ -1,4 +1,4 @@
-import IParentMap from "../interfaces/IParentMap";
+import ParentMap from "../interfaces/ParentMap";
 import IPerson from "../interfaces/IPerson";
 import FamilyMember from "../entities/famtree/FamilyMember";
 import IMemberMap from "../interfaces/IMemberMap";
@@ -9,7 +9,7 @@ class FamilyBuilder {
     parentMap: {[id:number]: number[]};
     people: { [id:number]: IPerson };
 
-    constructor(parentMap: IParentMap, people: { [id:number]: IPerson }) {
+    constructor(parentMap: ParentMap, people: { [id:number]: IPerson }) {
         this.parentMap = parentMap;
         this.people = people;
     }

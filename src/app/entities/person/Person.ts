@@ -1,6 +1,6 @@
 import BaseEntity from "../BaseEntity";
 import IPerson from "../../interfaces/IPerson";
-import Sex from "./Sex";
+import { Sex } from "../../constants";
 
 function getDateFormat(date: string | Date) {
     const reDate = new Date(date)

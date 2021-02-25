@@ -1,11 +1,7 @@
 import IPerson from "../interfaces/IPerson";
 import Person from "../entities/person/Person";
 import Swal from 'sweetalert2';
-
-// const backend = 'https://localhost:44330';
-const backend = '';
-
-
+import { backend } from './config';
 
 export const Create = async (person: IPerson): Promise<IPerson|null> => {
     const body = {

@@ -1,21 +1,21 @@
+import React from 'react'
 import PersonProfile from "../common/PersonProfile";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import female from "../../../assets/icons/female-solid.svg";
 import male from "../../../assets/icons/male-solid.svg";
-import {PersonViews} from "../common/PersonViews";
 import IFamilyMember from "../../../app/interfaces/IFamilyMember";
-import Sex from "../../../app/entities/person/Sex";
+import {Sex, PersonView} from "../../../app/constants";
+import ViewContext from "../../../context/ViewContext";
 
 type Props = {
-    familyMember: IFamilyMember,
-    onViewChange: Function
+    familyMember: IFamilyMember
 }
 
-export default ({familyMember, onViewChange}: Props) => {
+export default ({familyMember}: Props) => {
     const person = familyMember.Person
 
-    let piblings:IFamilyMember[] = []
+    let piblings: IFamilyMember[] = []
 
     for (const parent of familyMember.parents)
         piblings = [...piblings, ...parent.siblings]
@@ -30,7 +30,9 @@ export default ({familyMember, onViewChange}: Props) => {
                         {!person.isAlive() && <span className='person-dead'/>}
                     </Col>
                     <Col className='text-right'>
-                        <span onClick={() => onViewChange(PersonViews.DETAILS)} className='go go-more-vert hover hover-primary go-2x'/>
+                        <ViewContext.Consumer>
+                            {({changeView}) => <span onClick={() => changeView(PersonView.DETAILS)} className='go go-more-vert hover hover-primary go-2x'/>}
+                        </ViewContext.Consumer>
                     </Col>
                 </Row>
 

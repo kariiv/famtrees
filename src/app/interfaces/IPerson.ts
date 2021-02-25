@@ -1,4 +1,4 @@
-import Sex from '../entities/person/Sex'
+import { Sex } from '../constants'
 
 interface IPerson {
 
