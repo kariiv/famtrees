@@ -264,3 +264,9 @@
 .go-arrow-left:before {
   content: "\f1e6"
 }
+.go-info:before {
+  content: "\e001"
+}
+.go-earth:before {
+  content: "\e80b"
+}

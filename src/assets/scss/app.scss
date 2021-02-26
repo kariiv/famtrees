@@ -132,3 +132,8 @@ select option:hover {
 select:focus > option:checked {
   background: #000 !important;
 }
+.icon-center {
+  height: fit-content;
+  margin-top: auto;
+  margin-bottom: auto;
+}

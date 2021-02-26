@@ -7,6 +7,8 @@ import male from "../../../assets/icons/male-solid.svg";
 import IFamilyMember from "../../../app/interfaces/IFamilyMember";
 import {Sex, PersonView} from "../../../app/constants";
 import ViewContext from "../../../context/ViewContext";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 type Props = {
     familyMember: IFamilyMember
@@ -63,6 +65,9 @@ export default ({familyMember}: Props) => {
                             <Col className='text-center'>
                                 <Row className='justify-content-center user-select-none'>
                                     Siblings
+                                    <OverlayTrigger placement='top' overlay={<Tooltip id={person.getId().toString()}>Brothers and sisters.</Tooltip>}>
+                                        <span className='go go-info text-primary hover icon-center'/>
+                                    </OverlayTrigger>
                                 </Row>
                                 <Row className='justify-content-center user-select-none'>
                                     {familyMember.siblings.length}
@@ -72,6 +77,9 @@ export default ({familyMember}: Props) => {
                             <Col className='text-center'>
                                 <Row className='justify-content-center user-select-none'>
                                     Piblings
+                                    <OverlayTrigger placement='top' overlay={<Tooltip id={person.getId().toString()}>Uncles and aunts.</Tooltip>}>
+                                        <span className='go go-info text-primary hover icon-center'/>
+                                    </OverlayTrigger>
                                 </Row>
                                 <Row className='justify-content-center user-select-none'>
                                     {piblings.length}
