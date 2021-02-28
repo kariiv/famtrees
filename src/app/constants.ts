@@ -6,6 +6,7 @@ export enum Sex {
 export enum FamilyClass {
     PARENT,
     SIBLING,
+    STEPSIBLING,
     CHILD,
     PIBLING,
     GRANDPARENTS

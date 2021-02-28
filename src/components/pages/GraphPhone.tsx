@@ -11,6 +11,8 @@ import { Sex } from "../../app/constants";
 import AddRelative from "./graphPhone/AddRelative";
 import IFamilyMember from "../../app/interfaces/IFamilyMember";
 import PersonBreadcrumb from "./common/PersonBreadcrumb";
+import GetParents from "../../app/services/GetParents";
+import Parents from "../../app/interfaces/Parents";
 
 function sortFamilyMembers(list: IFamilyMember[]) {
     list.sort((a, b) => {
@@ -80,15 +82,9 @@ class GraphPhone extends Component<Props, State> {
         }
         else slideIndex = siblings.indexOf(familyMember);
 
-        const scrolledFamilyMember = siblings[slideIndex]
+        const scrolledFamilyMember = siblings[slideIndex];
 
-        let mom;
-        let dad;
-        const parents = scrolledFamilyMember.parents
-        for (const parent of parents) {
-            if (parent.Person.getSex() === Sex.MALE) dad = parent;
-            else mom = parent
-        }
+        const { mom, dad } = GetParents(scrolledFamilyMember);
 
         const children = scrolledFamilyMember.children
         sortFamilyMembers(children)
@@ -116,7 +112,7 @@ class GraphPhone extends Component<Props, State> {
                     initialSlide={slideIndex}
             >
                 {siblings.map(f => <SwiperSlide key={f.Person.getId()}>
-                    <MainCard familyMember={f} />
+                    <MainCard familyMember={f} compareFM={familyMember} />
                 </SwiperSlide>)}
             </Swiper>
 

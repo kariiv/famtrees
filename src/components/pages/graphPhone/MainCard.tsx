@@ -5,22 +5,34 @@ import Col from "react-bootstrap/Col";
 import female from "../../../assets/icons/female-solid.svg";
 import male from "../../../assets/icons/male-solid.svg";
 import IFamilyMember from "../../../app/interfaces/IFamilyMember";
-import {Sex, PersonView} from "../../../app/constants";
+import {FamilyClass, PersonView, Sex} from "../../../app/constants";
 import ViewContext from "../../../context/ViewContext";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import MemberClass from "../../../app/services/MemberClass";
+import GetParents from "../../../app/services/GetParents";
 
 type Props = {
     familyMember: IFamilyMember
+    compareFM?: IFamilyMember
 }
 
-export default ({familyMember}: Props) => {
+export default ({familyMember, compareFM}: Props) => {
     const person = familyMember.Person
+    let isStepSibling = false;
 
     let piblings: IFamilyMember[] = []
 
     for (const parent of familyMember.parents)
         piblings = [...piblings, ...parent.siblings]
+
+    if (compareFM && compareFM.parents.length === 2 && familyMember.parents.length === 2) {
+        const parents1 = GetParents(familyMember);
+        const parents2 = GetParents(compareFM);
+
+        if (parents1.mom !== parents2.mom || parents1.dad !== parents2.dad)
+            isStepSibling = true;
+    }
 
     return (
         <ViewContext.Consumer>
@@ -31,6 +43,7 @@ export default ({familyMember}: Props) => {
                         <Row>
                             <Col>
                                 {!person.isAlive() && <span className='person-dead'/>}
+                                {isStepSibling && MemberClass(familyMember.Person, FamilyClass.STEPSIBLING) }
                             </Col>
                             <Col className='text-right'>
                                 <span onClick={() => changeView(PersonView.DETAILS)} className='go go-more-vert hover hover-primary go-2x'/>
