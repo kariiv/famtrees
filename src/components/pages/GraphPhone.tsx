@@ -40,7 +40,6 @@ export default ({ familyMember, breadcrumb}: Props) => {
 
         <Row className='scrollable'>
 
-
             {!!dad && dad.siblings.map(s => <RelativeCard key={s.Person.getId()} person={s.Person} familyClass={FamilyClass.PIBLING}/>) }
 
             {!!dad && <RelativeCard person={dad.Person} familyClass={FamilyClass.PARENT}/>}
@@ -53,23 +52,17 @@ export default ({ familyMember, breadcrumb}: Props) => {
 
         </Row>
 
-        <Row>
-            <Col>
-                <Swiper spaceBetween={50} slidesPerView={1}>
+        <Swiper spaceBetween={4} slidesPerView={1}>
+            <SwiperSlide>
+                <MainCard familyMember={familyMember} />
+            </SwiperSlide>
 
-                    <SwiperSlide>
-                        <MainCard familyMember={familyMember} />
-                    </SwiperSlide>
+            {siblings.map(f => <SwiperSlide key={f.Person.getId()}>
+                <MainCard familyMember={f} />
+            </SwiperSlide>)}
+        </Swiper>
 
-                    {siblings.map(f => <SwiperSlide key={f.Person.getId()}>
-                        <MainCard familyMember={f} />
-                    </SwiperSlide>)}
-
-                </Swiper>
-            </Col>
-        </Row>
-
-        <Row className='profile-modal-md scrollable'>
+        <Row className='mt-2 scrollable'>
             { children.map(f => <RelativeCard key={f.Person.getId()} person={f.Person} familyClass={FamilyClass.CHILD}/>) }
             <AddRelative familyMember={familyMember} isParent={true} tag={'child'}/>
         </Row>

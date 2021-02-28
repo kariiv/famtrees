@@ -26,6 +26,8 @@ class FamilyBuilder {
 
             const child = members[personId];
             const parent = members[parentId];
+            if (!child || !parent)
+                continue;
 
             child.parents.push(parent);
             parent.children.push(child);

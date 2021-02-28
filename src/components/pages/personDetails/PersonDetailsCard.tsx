@@ -41,7 +41,7 @@ export default ({person, onEdit}: Props) => {
 
                 <PersonProfile img={person.getSex() === Sex.MALE ? male : female} lg center/>
 
-                <Row className='mb-4'>
+                <Row className='mb-3'>
                     <Col className='text-dark'>
                         {!person.isAlive() && <span className='person-dead'/>}
                     </Col>

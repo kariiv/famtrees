@@ -25,7 +25,7 @@ export default ({familyMember}: Props) => {
     return (
         <ViewContext.Consumer>
             { ({changeView, pushBreadcrumb}) => (
-                <div className='bg-light mx-1 text-dark font-weight-bold card card-body mt-5' onDoubleClick={() => pushBreadcrumb(person)}>
+                <div className='bg-light mx-1 text-dark font-weight-bold card card-body mt-4' onDoubleClick={() => pushBreadcrumb(person)}>
                     <div className=''>
                         <PersonProfile img={person.getSex() === Sex.MALE ? male : female} center md/>
                         <Row>
@@ -37,25 +37,25 @@ export default ({familyMember}: Props) => {
                             </Col>
                         </Row>
 
-                        <Col className='lh-1 mb-2 user-select-none'>
-                            <Row className='justify-content-center text-primary'>
+                        <Col className='lh-2 mb-2 user-select-none'>
+                            <Row className='justify-content-center text-primary fs-5'>
                                 {person.getFirstName()}
                             </Row>
-                            <Row className='justify-content-center fs-5 mb-1'>
+                            <Row className='justify-content-center fs-4 mb-1'>
                                 {person.getLastName()}
                             </Row>
                             <Row className='justify-content-center  fs-8 lh-0'>
                                 {person.getBirthday()}
                             </Row>
                             <Row className='justify-content-center fs-8 lh-0'>
-                                {person.getDeathDate()}
+                                {!person.isAlive() && person.getDeathDate()}
                             </Row>
                         </Col>
 
                         <Row>
                             <Col>
                                 <Row className='justify-content-center user-select-none'>
-                                    Kids
+                                    Children
                                 </Row>
                                 <Row className='justify-content-center user-select-none'>
                                     {familyMember.children.length}
