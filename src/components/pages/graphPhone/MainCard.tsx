@@ -25,7 +25,7 @@ export default ({familyMember}: Props) => {
     return (
         <ViewContext.Consumer>
             { ({changeView, pushBreadcrumb}) => (
-                <div className='bg-light mx-1 text-dark font-weight-bold card card-body mt-4' onDoubleClick={() => pushBreadcrumb(person)}>
+                <div className='bg-light mx-1 text-dark font-weight-bold card card-body mt-45' onDoubleClick={() => pushBreadcrumb(person)}>
                     <div className=''>
                         <PersonProfile img={person.getSex() === Sex.MALE ? male : female} center md/>
                         <Row>

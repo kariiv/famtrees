@@ -21,14 +21,12 @@ export default ({isParent, tag, sex, familyMember}: Props) => {
 
     return (
         <>
-            <Col className='' xs={5} md={4} lg={3} onClick={() => setShow(true)}>
+            <Col className='pt-2 ' xs={5} md={4} lg={3} onClick={() => setShow(true)}>
                 <div className='fs-5 card bg-secondary text-dark font-weight-bold p-2 hover hover-bg-gray-light'>
                     {sex !== undefined && <PersonProfile img={sex === Sex.MALE ? male : female}/>}
-                    <Row>
-                        <Col className='text-right mr-2 text-uppercase'>
-                            {tag}
-                        </Col>
-                    </Row>
+                    <div className='text-right mr-2 text-uppercase'>
+                        {tag}
+                    </div>
                     <span className='go go-add go-2x text-center'/>
                 </div>
             </Col>

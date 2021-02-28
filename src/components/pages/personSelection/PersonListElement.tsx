@@ -16,7 +16,7 @@ type Props = {
 export default ({person, onClick}: Props) => {
     return (
         <Row className='my-3 mx-2 border-white border-bottom border-top bg-dark p-2' >
-            <Col className='fs-3 hover' onClick={() => onClick(PersonView.PHONE)}>
+            <Col xs={8} className='fs-3 hover' onClick={() => onClick(PersonView.PHONE)}>
                 <img className='mr-3' src={person.getSex() === Sex.MALE ? male : female} alt='person' height={35}/><span className='text-primary'>{person.getFirstName()}</span> {person.getLastName()}
             </Col>
             <Col className='text-right align-self-center'>

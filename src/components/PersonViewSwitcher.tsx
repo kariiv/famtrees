@@ -40,11 +40,8 @@ class PersonViewSwitcher extends Component<Props,State> {
 
         const index = breadcrumb.indexOf(person);
         if (index !== -1) // Person already in breadcrumb, removing loops
-        {
-            console.log("already in")
             return this.setState({breadcrumb: breadcrumb.slice(0, index + 1)})
-        }
-        console.log("Adding")
+
         this.setState({breadcrumb: [...breadcrumb, person]})
     }
 
